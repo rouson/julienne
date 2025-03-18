@@ -6,24 +6,20 @@ submodule(julienne_string_m) julienne_string_s
   
 contains
 
-  module procedure as_character
-    raw_string = self%string_
-  end procedure
-
   module procedure from_characters
     new_string%string_ = string
   end procedure
 
   module procedure string_t_eq_string_t
-    lhs_eq_rhs = lhs%string() == rhs%string()
+    lhs_eq_rhs = lhs%string_ == rhs%string_
   end procedure
    
   module procedure string_t_eq_character
-    lhs_eq_rhs = lhs%string() == rhs
+    lhs_eq_rhs = lhs%string_ == rhs
   end procedure
 
   module procedure character_eq_string_t
-    lhs_eq_rhs = lhs == rhs%string()
+    lhs_eq_rhs = lhs == rhs%string_
   end procedure
    
   module procedure bracket
