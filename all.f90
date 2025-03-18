@@ -4,17 +4,17 @@
     character(len=:), allocatable :: string_
   end type
 
-  print *, always_true([some_string()])
+  print *, true([string()])
 
 contains
 
-  type(string_t) function some_string()
-    some_string%string_ = ""
+  type(string_t) function string()
+    string%string_ = ""
   end function
 
-  logical elemental function always_true(rhs)
+  logical elemental function true(rhs)
     class(string_t), intent(in) :: rhs
-    always_true = .true.
+    true = .true.
   end function
 
 end
