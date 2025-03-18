@@ -10,109 +10,8 @@ contains
     raw_string = self%string_
   end procedure
 
-  module procedure is_allocated
-    string_allocated = allocated(self%string_)
-  end procedure
-
   module procedure from_characters
     new_string%string_ = string
-  end procedure
-
-  module procedure concatenate_elements
-    integer s 
-
-    concatenated_strings = ""
-    do s = 1, size(strings)
-      concatenated_strings = concatenated_strings // strings(s)%string()
-    end do
-  end procedure
-
-  module procedure strings_with_comma_separator
-    csv = strings_with_string_t_separator(strings, string_t(","))
-  end procedure 
-
-  module procedure characters_with_comma_separator
-    csv = strings_with_string_t_separator(string_t(strings), string_t(","))
-  end procedure 
-
-  module procedure characters_with_character_separator
-    sv = strings_with_string_t_separator(string_t(strings), string_t(separator))
-  end procedure 
-
-  module procedure characters_with_string_separator
-    sv = strings_with_string_t_separator(string_t(strings), separator)
-  end procedure 
-
-  module procedure strings_with_character_separator
-    sv = strings_with_string_t_separator(strings, string_t(separator))
-  end procedure 
-
-  module procedure strings_with_string_t_separator
-
-    integer s 
-
-    associate(num_elements => size(strings))
-
-      sv = ""
-
-      do s = 1, num_elements - 1
-        sv = sv // strings(s) // separator
-      end do
-
-      sv = sv // strings(num_elements)
-
-    end associate
-
-  end procedure
-
-  module procedure array_of_strings
-    character(len=:), allocatable :: remainder, next_string
-    integer next_delimiter, string_end
-
-    remainder = trim(adjustl(delimited_strings))
-    allocate(strings_array(0))
-
-    do  
-      next_delimiter = index(remainder, delimiter)
-      string_end = merge(len(remainder), next_delimiter-1, next_delimiter==0)
-      next_string = trim(adjustl(remainder(:string_end)))
-      if (len(next_string)==0) exit
-      strings_array = [strings_array, string_t(next_string)]
-      if (next_delimiter==0) then
-        remainder = ""
-      else
-        remainder = trim(adjustl(remainder(next_delimiter+1:)))
-      end if
-    end do
-
-  end procedure
-
-  module procedure file_extension
-    character(len=:), allocatable :: name_
-
-    name_ = trim(adjustl(self%string()))
-
-    associate( dot_location => index(name_, '.', back=.true.) )
-      if (dot_location < len(name_)) then
-        extension = trim(adjustl(name_(dot_location+1:)))
-      else
-        extension = ""
-      end if
-    end associate
-  end procedure
-
-  module procedure base_name
-    character(len=:), allocatable :: name_
-
-    name_ = self%string()
-    
-    associate(dot_location => index(name_, '.', back=.true.) )
-      if (dot_location < len(name_)) then
-        base = trim(adjustl(name_(1:dot_location-1)))
-      else
-        base = ""
-      end if
-    end associate
   end procedure
 
   module procedure string_t_eq_string_t
@@ -127,38 +26,10 @@ contains
     lhs_eq_rhs = lhs == rhs%string()
   end procedure
    
-  module procedure string_t_ne_string_t
-    lhs_ne_rhs = lhs%string() /= rhs%string()
-  end procedure
-   
-  module procedure string_t_ne_character
-    lhs_ne_rhs = lhs%string() /= rhs
-  end procedure
-
-  module procedure character_ne_string_t
-    lhs_ne_rhs = lhs /= rhs%string()
-  end procedure
-   
-  module procedure assign_string_t_to_character
-    lhs = rhs%string()
-  end procedure
-   
   module procedure assign_character_to_string_t
     lhs%string_ = rhs
   end procedure
 
-  module procedure string_t_cat_string_t
-    lhs_cat_rhs = string_t(lhs%string_ // rhs%string_)
-  end procedure
-   
-  module procedure string_t_cat_character
-    lhs_cat_rhs = string_t(lhs%string_ // rhs)
-  end procedure
-
-  module procedure character_cat_string_t
-    lhs_cat_rhs = string_t(lhs // rhs%string_)
-  end procedure
-   
   module procedure bracket
   
     character(len=:), allocatable :: actual_opening, actual_closing
