@@ -11,7 +11,7 @@
 
 contains
 
-  elemental function from_characters(string) result(new_string)
+  function from_characters(string) result(new_string)
     character(len=*), intent(in) :: string
     type(string_t) new_string
     new_string%string_ = string
@@ -24,7 +24,7 @@ contains
   end function
 
   elemental function bracket(self) result(bracketed_self)
-    class(string_t), intent(in) :: self
+    type(string_t), intent(in) :: self
     type(string_t) bracketed_self
     bracketed_self = string_t("[" // self%string_ // "]")
   end function
