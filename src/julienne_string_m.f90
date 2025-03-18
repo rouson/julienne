@@ -11,18 +11,13 @@ module julienne_string_m
     procedure, private :: string_t_eq_string_t
   end type
 
-  interface string_t
+  interface
 
     elemental module function from_characters(string) result(new_string)
       implicit none
       character(len=*), intent(in) :: string
       type(string_t) new_string
     end function
-
-  end interface
-
-
-  interface
 
     pure module function as_character(self) result(raw_string)
       implicit none
