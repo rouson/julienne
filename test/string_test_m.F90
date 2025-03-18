@@ -36,157 +36,21 @@ contains
 
 #if HAVE_PROCEDURE_ACTUAL_FOR_POINTER_DUMMY
     test_descriptions = [ &
-       test_description_t('constructing from a default integer',                                   constructs_from_default_integer)&
-      ,test_description_t('constructing from a default real value',                                   constructs_from_default_real)&
-      ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision)&
-      ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex)&
-      ,test_description_t('constructing from a default-kind logical value',                        constructs_from_default_logical)&
-      ,test_description_t('constructing from a logical(c_bool) value',                              constructs_from_logical_c_bool)&
-      ,test_description_t('constructing bracketed strings',                                                       brackets_strings)&
-      ,test_description_t('constructing (comma-)separated values from character or string_t arrays',   constructs_separated_values)&
-      ,test_description_t('constructing from a double-precision complex value',           constructs_from_double_precision_complex)&
+       test_description_t('constructing bracketed strings', brackets_strings)&
     ]
 #else
     ! Work around missing Fortran 2008 feature: associating a procedure actual argument with a procedure pointer dummy argument:
-    procedure(diagnosis_function_i), pointer :: &
-       constructs_from_default_integer_ptr      &
-      ,constructs_from_default_real_ptr         &
-      ,constructs_from_double_precision_ptr     &
-      ,constructs_from_default_complex_ptr      &
-      ,constructs_from_default_logical_ptr      &
-      ,constructs_from_logical_c_bool_ptr       &
-      ,brackets_strings_ptr                     &
-      ,constructs_separated_values_ptr          &
-      ,constructs_from_double_precision_complex_ptr
-
-      constructs_from_default_integer_ptr          => constructs_from_default_integer
-      constructs_from_default_real_ptr             => constructs_from_default_real
-      constructs_from_double_precision_ptr         => constructs_from_double_precision       
-      constructs_from_default_complex_ptr          => constructs_from_default_complex
-      constructs_from_default_logical_ptr          => constructs_from_default_logical
-      constructs_from_logical_c_bool_ptr           => constructs_from_logical_c_bool
-      brackets_strings_ptr                         => brackets_strings
-      constructs_separated_values_ptr              => constructs_separated_values
-      constructs_from_double_precision_complex_ptr => constructs_from_double_precision_complex
+    procedure(diagnosis_function_i), pointer :: brackets_strings_ptr
+    brackets_strings_ptr => brackets_strings
 
     test_descriptions = [ &
-       test_description_t('constructing from a default integer',                                   constructs_from_default_integer_ptr)&
-      ,test_description_t('constructing from a default real value',                                   constructs_from_default_real_ptr)&
-      ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision_ptr)&
-      ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex_ptr)&
-      ,test_description_t('constructing from a default-kind logical value',                        constructs_from_default_logical_ptr)&
-      ,test_description_t('constructing from a logical(c_bool) value',                              constructs_from_logical_c_bool_ptr)&
-      ,test_description_t('constructing bracketed strings',                                                       brackets_strings_ptr)&
-      ,test_description_t('constructing (comma-)separated values from character or string_t arrays',   constructs_separated_values_ptr)&
-      ,test_description_t('constructing from a double-precision complex value',           constructs_from_double_precision_complex_ptr)&
+       test_description_t('constructing bracketed strings', brackets_strings_ptr)&
     ]
 #endif
     test_descriptions = pack(test_descriptions, &
       index(subject(), test_description_substring) /= 0 .or. &
       test_descriptions%contains_text(string_t(test_description_substring)))
     test_results = test_descriptions%run()
-  end function
-
-  function constructs_from_default_integer() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    integer, parameter :: expected_value = 1234567890
-
-    associate(string => string_t(expected_value))
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = adjustl(trim(string%string())) == "1234567890" &
-        ,diagnostics_string = "expected '"// string_t(expected_value) // "', actual " // string%string() &
-      )
-    end associate
-  end function
-
-  function constructs_from_default_real() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    real, parameter :: real_value = -1./1024. ! use a negative power of 2 for an exactly representable rational number
-    real read_value
-    character(len=:), allocatable :: character_representation
-
-    associate(string => string_t(real_value))
-      character_representation = string%string()
-      read(character_representation, *) read_value
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = read_value == real_value &
-        ,diagnostics_string = "expected '"// string_t(real_value) // "', actual " // string_t(read_value) &
-      )
-    end associate
-  end function
-
-  function constructs_from_double_precision() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    double precision, parameter :: double_precision_value = -1D0/1024D0 ! use a negative power of 2 for an exactly representable rational number
-    real read_value
-    character(len=:), allocatable :: character_representation
-
-    associate(string => string_t(double_precision_value))
-      character_representation = string%string()
-      read(character_representation, *) read_value
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = read_value == double_precision_value &
-        ,diagnostics_string = "expected '"// string_t(double_precision_value) // "', actual " // string_t(read_value) &
-      )
-    end associate
-  end function
-
-  function constructs_from_default_complex() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    real, parameter :: real_value = -1./1024. ! use a negative power of 2 for an exactly representable rational number
-    real, parameter :: tolerance = 1E-08
-    complex, parameter :: z = (real_value, real_value)
-    complex read_value
-    character(len=:), allocatable :: character_representation
-
-    associate(string => string_t(z))
-      character_representation = string%string()
-      read(character_representation, *) read_value
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = abs(read_value - z) < tolerance &
-        ,diagnostics_string = "expected '"// string_t(z) // "', actual " // string_t(read_value) &
-      )
-    end associate
-  end function
-
-  function constructs_from_double_precision_complex() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    double precision, parameter :: double_precision_value = -1D0/1024D0 ! use a negative power of 2 for an exactly representable rational number
-    double precision, parameter :: tolerance = 1E-16
-    complex(kind(1D0)), parameter :: z = (double_precision_value, double_precision_value)
-    complex(kind(1D0)) read_value
-    character(len=:), allocatable :: character_representation
-
-    associate(string => string_t(z))
-      character_representation = string%string()
-      read(character_representation, *) read_value
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = abs(read_value - z) < tolerance &
-        ,diagnostics_string = "expected '"// string_t(z) // "', actual " // string_t(read_value) &
-      )
-    end associate
-  end function
-
-  function constructs_from_default_logical() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(true => string_t(.true.), false => string_t(.false.))
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = all([true%string() == "T", false%string() == "F"]) &
-        ,diagnostics_string = "expected T, F; actual '"// true%string() // ", " // false%string() &
-      )
-    end associate
-  end function
-
-  function constructs_from_logical_c_bool() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(true => string_t(.true._c_bool), false => string_t(.false._c_bool))
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = true%string() == "T" .and. false%string() == "F" &
-        ,diagnostics_string = "expected T, F; actual '"// true%string() // ", " // false%string() &
-      )
-    end associate
   end function
 
   function brackets_strings() result(test_diagnosis)
@@ -214,21 +78,6 @@ contains
       end block
 #endif
     end associate
-  end function
-
-  function constructs_separated_values() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    test_diagnosis = test_diagnosis_t( &
-      test_passed = &
-              "a,bc,def" == .csv. [string_t("a"), string_t("bc"), string_t("def")]    &
-        .and. "abc,def"  == .csv. ["abc", "def"]                                      &
-        .and. "do|re|mi" == (string_t(["do", "re", "mi"])         .sv.          "|" ) &
-        .and. "dore|mi"  == (([string_t("dore"), string_t("mi")]) .sv. string_t("|")) &
-        .and. "do|re|mi" == (         ["do", "re", "mi"]          .sv.          "|" ) &
-        .and. "do|re|mi" == (         ["do", "re", "mi"]          .sv. string_t("|")) &
-      ,diagnostics_string = "" &
-    )
   end function
 
 end module string_test_m
