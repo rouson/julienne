@@ -3,8 +3,6 @@ module julienne_string_m
   
   type string_t
     character(len=:), allocatable :: string_
-  contains
-    procedure :: bracket
   end type
 
   interface
