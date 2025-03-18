@@ -26,10 +26,6 @@ contains
     lhs_eq_rhs = lhs == rhs%string()
   end procedure
    
-  module procedure assign_character_to_string_t
-    lhs%string_ = rhs
-  end procedure
-
   module procedure bracket
   
     character(len=:), allocatable :: actual_opening, actual_closing

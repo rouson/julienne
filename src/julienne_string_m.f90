@@ -3,20 +3,14 @@
 module julienne_string_m
   implicit none
   
-  private
-  public :: string_t
-
   type string_t
-    private
     character(len=:), allocatable :: string_
   contains
     procedure :: as_character
     generic :: string => as_character
     procedure :: bracket
     generic :: operator(==)   => string_t_eq_string_t
-    generic :: assignment(= ) => assign_character_to_string_t
     procedure, private :: string_t_eq_string_t
-    procedure, private :: assign_character_to_string_t
   end type
 
   interface string_t
@@ -57,12 +51,6 @@ module julienne_string_m
       character(len=*), intent(in) :: lhs
       logical lhs_eq_rhs
     end function
-
-    pure module subroutine assign_character_to_string_t(lhs, rhs)
-      implicit none
-      class(string_t), intent(inout) :: lhs
-      character(len=*), intent(in) :: rhs
-    end subroutine
 
     elemental module function bracket(self, opening, closing) result(bracketed_self)
       implicit none
