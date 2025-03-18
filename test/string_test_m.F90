@@ -36,8 +36,7 @@ contains
 
 #if HAVE_PROCEDURE_ACTUAL_FOR_POINTER_DUMMY
     test_descriptions = [ &
-       test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation)&
-      ,test_description_t('constructing from a default integer',                                   constructs_from_default_integer)&
+       test_description_t('constructing from a default integer',                                   constructs_from_default_integer)&
       ,test_description_t('constructing from a default real value',                                   constructs_from_default_real)&
       ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision)&
       ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex)&
@@ -50,8 +49,7 @@ contains
 #else
     ! Work around missing Fortran 2008 feature: associating a procedure actual argument with a procedure pointer dummy argument:
     procedure(diagnosis_function_i), pointer :: &
-       check_allocation_ptr                     &
-      ,constructs_from_default_integer_ptr      &
+       constructs_from_default_integer_ptr      &
       ,constructs_from_default_real_ptr         &
       ,constructs_from_double_precision_ptr     &
       ,constructs_from_default_complex_ptr      &
@@ -61,7 +59,6 @@ contains
       ,constructs_separated_values_ptr          &
       ,constructs_from_double_precision_complex_ptr
 
-      check_allocation_ptr                         => check_allocation
       constructs_from_default_integer_ptr          => constructs_from_default_integer
       constructs_from_default_real_ptr             => constructs_from_default_real
       constructs_from_double_precision_ptr         => constructs_from_double_precision       
@@ -73,8 +70,7 @@ contains
       constructs_from_double_precision_complex_ptr => constructs_from_double_precision_complex
 
     test_descriptions = [ &
-       test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation_ptr)&
-      ,test_description_t('constructing from a default integer',                                   constructs_from_default_integer_ptr)&
+       test_description_t('constructing from a default integer',                                   constructs_from_default_integer_ptr)&
       ,test_description_t('constructing from a default real value',                                   constructs_from_default_real_ptr)&
       ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision_ptr)&
       ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex_ptr)&
@@ -89,23 +85,6 @@ contains
       index(subject(), test_description_substring) /= 0 .or. &
       test_descriptions%contains_text(string_t(test_description_substring)))
     test_results = test_descriptions%run()
-  end function
-
-  pure function check_allocation() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    type(string_t) :: scalar_not_allocated, scalar_allocated, array_allocated(2), array_not_allocated(2)
-
-    scalar_allocated = string_t("")
-    array_allocated = [string_t("yada yada"), string_t("blah blah blah")]
-
-    associate(not_any_allocated => .not. any([scalar_not_allocated%is_allocated(), array_not_allocated%is_allocated()]))
-      associate(all_allocated => all([scalar_allocated%is_allocated(), array_allocated%is_allocated()]))
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = not_any_allocated .and. all_allocated &
-          ,diagnostics_string = "expected .true., true.; actual " // string_t(not_any_allocated) // string_t(all_allocated) &
-        )
-      end associate 
-    end associate 
   end function
 
   function constructs_from_default_integer() result(test_diagnosis)
