@@ -4,7 +4,7 @@
     character(len=:), allocatable :: string_
   end type
 
-  print *, equals(bracket(), [new_string()])
+  print *, true(string_t("["), [new_string()])
 
 contains
 
@@ -12,14 +12,10 @@ contains
     new_string%string_ = "["
   end function
 
-  logical elemental function equals(lhs, rhs)
+  logical elemental function true(lhs, rhs)
     type(string_t), intent(in) :: lhs
     class(string_t), intent(in) :: rhs
-    equals = lhs%string_ == rhs%string_
-  end function
-
-  type(string_t) function bracket()
-    bracket%string_ = "["
+    true = .true.
   end function
 
 end
