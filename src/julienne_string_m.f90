@@ -7,8 +7,6 @@ module julienne_string_m
     character(len=:), allocatable :: string_
   contains
     procedure :: bracket
-    generic :: operator(==)   => string_t_eq_string_t
-    procedure, private :: string_t_eq_string_t
   end type
 
   interface
