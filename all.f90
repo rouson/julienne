@@ -18,7 +18,7 @@ contains
     equals = lhs%string_ == rhs%string_
   end function
 
-  type(string_t) elemental function bracket()
+  type(string_t) function bracket()
     bracket%string_ = "["
   end function
 
