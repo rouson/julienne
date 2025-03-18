@@ -1,5 +1,3 @@
-! Copyright (c) 2024, The Regents of the University of California and Sourcery Institute
-! Terms of use are as specified in LICENSE.txt
 module julienne_string_m
   implicit none
   
@@ -15,12 +13,6 @@ module julienne_string_m
       implicit none
       character(len=*), intent(in) :: string
       type(string_t) new_string
-    end function
-
-    pure module function as_character(self) result(raw_string)
-      implicit none
-      class(string_t), intent(in) :: self
-      character(len=:), allocatable :: raw_string
     end function
 
     elemental module function string_t_eq_string_t(lhs, rhs) result(lhs_eq_rhs)

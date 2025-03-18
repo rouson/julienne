@@ -1,9 +1,6 @@
 submodule(julienne_string_m) julienne_string_s
   implicit none
 
-  integer, parameter :: integer_width_supremum = 11, default_real_width_supremum = 20, double_precision_width_supremum = 25
-  integer, parameter :: logical_width=2, comma_width = 1, parenthesis_width = 1, space=1
-  
 contains
 
   module procedure from_characters
