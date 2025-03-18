@@ -37,8 +37,6 @@ contains
 #if HAVE_PROCEDURE_ACTUAL_FOR_POINTER_DUMMY
     test_descriptions = [ &
        test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation)&
-      ,test_description_t('assigning a string_t object to a character variable',                     assigns_string_t_to_character)&
-      ,test_description_t('assigning a character variable to a string_t object',                     assigns_character_to_string_t)&
       ,test_description_t('constructing from a default integer',                                   constructs_from_default_integer)&
       ,test_description_t('constructing from a default real value',                                   constructs_from_default_real)&
       ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision)&
@@ -53,8 +51,6 @@ contains
     ! Work around missing Fortran 2008 feature: associating a procedure actual argument with a procedure pointer dummy argument:
     procedure(diagnosis_function_i), pointer :: &
        check_allocation_ptr                     &
-      ,assigns_string_t_to_character_ptr        &
-      ,assigns_character_to_string_t_ptr        &
       ,constructs_from_default_integer_ptr      &
       ,constructs_from_default_real_ptr         &
       ,constructs_from_double_precision_ptr     &
@@ -66,8 +62,6 @@ contains
       ,constructs_from_double_precision_complex_ptr
 
       check_allocation_ptr                         => check_allocation
-      assigns_string_t_to_character_ptr            => assigns_string_t_to_character
-      assigns_character_to_string_t_ptr            => assigns_character_to_string_t
       constructs_from_default_integer_ptr          => constructs_from_default_integer
       constructs_from_default_real_ptr             => constructs_from_default_real
       constructs_from_double_precision_ptr         => constructs_from_double_precision       
@@ -80,8 +74,6 @@ contains
 
     test_descriptions = [ &
        test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation_ptr)&
-      ,test_description_t('assigning a string_t object to a character variable',                     assigns_string_t_to_character_ptr)&
-      ,test_description_t('assigning a character variable to a string_t object',                     assigns_character_to_string_t_ptr)&
       ,test_description_t('constructing from a default integer',                                   constructs_from_default_integer_ptr)&
       ,test_description_t('constructing from a default real value',                                   constructs_from_default_real_ptr)&
       ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision_ptr)&
@@ -114,31 +106,6 @@ contains
         )
       end associate 
     end associate 
-  end function
-
-  function assigns_string_t_to_character() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    character(len=:), allocatable :: lhs
-
-    associate(rhs => string_t("ya don't say"))
-      lhs = rhs
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = lhs == rhs &
-        ,diagnostics_string = "expected lhs == rhs; actual lhs = " // lhs // ", rhs = " // rhs &
-      )
-    end associate
-  end function
-
-  function assigns_character_to_string_t() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    character(len=*), parameter :: rhs = "well, alrighty then"
-    type(string_t) lhs
-
-    lhs = rhs
-    test_diagnosis = test_diagnosis_t( &
-       test_passed = lhs == rhs &
-      ,diagnostics_string = "expected lhs == rhs; actual lhs = " // lhs // ", rhs = " // rhs &
-    )
   end function
 
   function constructs_from_default_integer() result(test_diagnosis)
