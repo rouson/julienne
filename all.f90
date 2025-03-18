@@ -4,7 +4,7 @@
     character(len=:), allocatable :: string_
   end type
 
-  print *, always_true(string_t(""), [some_string()])
+  print *, always_true([some_string()])
 
 contains
 
@@ -12,8 +12,7 @@ contains
     some_string%string_ = ""
   end function
 
-  logical elemental function always_true(lhs, rhs)
-    type(string_t), intent(in) :: lhs
+  logical elemental function always_true(rhs)
     class(string_t), intent(in) :: rhs
     always_true = .true.
   end function
