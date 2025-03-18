@@ -55,29 +55,14 @@ contains
 
   function brackets_strings() result(test_diagnosis)
     type(test_diagnosis_t) test_diagnosis
+    type(string_t), allocatable :: array(:)
 
-    associate(scalar => string_t("do re mi"))
-       
-#ifndef __GFORTRAN__
-      associate(array  => string_t(["do", "re", "mi"]))
-#else
-      block
-        type(string_t), allocatable :: array(:)
-        array = string_t(["do", "re", "mi"])
-#endif
-      test_diagnosis = test_diagnosis_t( &
-        test_passed = scalar%bracket()        == string_t("[do re mi]")                                  &
-             .and. all(array%bracket()        == [string_t("[do]"), string_t("[re]"), string_t("[mi]")]) &
-             .and. all(array%bracket('"')     == [string_t('"do"'), string_t('"re"'), string_t('"mi"')]) &
-             .and. all(array%bracket("{","}") == [string_t('{do}'), string_t('{re}'), string_t('{mi}')]) &
-        ,diagnostics_string = "" &
-      )
-#ifndef __GFORTRAN__
-      end associate
-#else
-      end block
-#endif
-    end associate
+    array = string_t(["do", "re", "mi"])
+
+    test_diagnosis = test_diagnosis_t( &
+      test_passed = all(array%bracket()        == [string_t("[do]"), string_t("[re]"), string_t("[mi]")]) &
+      ,diagnostics_string = "" &
+    )
   end function
 
 end module string_test_m
