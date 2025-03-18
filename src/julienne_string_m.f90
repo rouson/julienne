@@ -9,6 +9,7 @@ module julienne_string_m
     procedure :: as_character
     generic :: string => as_character
     procedure :: bracket
+    generic :: operator(==)   => string_t_eq_string_t
     procedure, private :: string_t_eq_string_t
   end type
 
@@ -34,6 +35,20 @@ module julienne_string_m
     elemental module function string_t_eq_string_t(lhs, rhs) result(lhs_eq_rhs)
       implicit none
       class(string_t), intent(in) :: lhs, rhs
+      logical lhs_eq_rhs
+    end function
+
+    elemental module function string_t_eq_character(lhs, rhs) result(lhs_eq_rhs)
+      implicit none
+      class(string_t), intent(in) :: lhs
+      character(len=*), intent(in) :: rhs
+      logical lhs_eq_rhs
+    end function
+
+    elemental module function character_eq_string_t(lhs, rhs) result(lhs_eq_rhs)
+      implicit none
+      class(string_t), intent(in) :: rhs
+      character(len=*), intent(in) :: lhs
       logical lhs_eq_rhs
     end function
 

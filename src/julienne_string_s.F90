@@ -18,6 +18,14 @@ contains
     lhs_eq_rhs = lhs%string() == rhs%string()
   end procedure
    
+  module procedure string_t_eq_character
+    lhs_eq_rhs = lhs%string() == rhs
+  end procedure
+
+  module procedure character_eq_string_t
+    lhs_eq_rhs = lhs == rhs%string()
+  end procedure
+   
   module procedure bracket
   
     character(len=:), allocatable :: actual_opening, actual_closing
