@@ -31,20 +31,6 @@ module julienne_string_m
       logical lhs_eq_rhs
     end function
 
-    elemental module function string_t_eq_character(lhs, rhs) result(lhs_eq_rhs)
-      implicit none
-      class(string_t), intent(in) :: lhs
-      character(len=*), intent(in) :: rhs
-      logical lhs_eq_rhs
-    end function
-
-    elemental module function character_eq_string_t(lhs, rhs) result(lhs_eq_rhs)
-      implicit none
-      class(string_t), intent(in) :: rhs
-      character(len=*), intent(in) :: lhs
-      logical lhs_eq_rhs
-    end function
-
     elemental module function bracket(self, opening, closing) result(bracketed_self)
       implicit none
       class(string_t), intent(in) :: self
