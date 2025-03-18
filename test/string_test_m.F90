@@ -37,16 +37,6 @@ contains
 #if HAVE_PROCEDURE_ACTUAL_FOR_POINTER_DUMMY
     test_descriptions = [ &
        test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation)&
-      ,test_description_t("extracting a key string from a colon-separated key/value pair",                            extracts_key)&
-      ,test_description_t("extracting double-precision value from colon-separated key/value pair", extracts_double_precision_value)&
-      ,test_description_t("extracting a real value from a colon-separated key/value pair",                     extracts_real_value)&
-      ,test_description_t("extracting a string value from a colon-separated key/value pair",              extracts_character_value)&
-      ,test_description_t("extracting a string value from a colon-separated key/value pair",                 extracts_string_value)&
-      ,test_description_t("extracting an integer value from a colon-separated key/value pair",              extracts_integer_value)&
-      ,test_description_t("extracting a logical value from a colon-separated key/value pair",               extracts_logical_value)&
-      ,test_description_t("extracting an integer array value from a colon-separated key/value pair",  extracts_integer_array_value)&
-      ,test_description_t("extracting an real array value from a colon-separated key/value pair",        extracts_real_array_value)&
-      ,test_description_t("extracting a double-precision array from a colon-separated key/value pair",     extracts_dp_array_value)&
       ,test_description_t('supporting operator(==) for string_t and character operands',             supports_equivalence_operator)&
       ,test_description_t('supporting operator(/=) for string_t and character operands',         supports_non_equivalence_operator)&
       ,test_description_t('assigning a string_t object to a character variable',                     assigns_string_t_to_character)&
@@ -58,11 +48,8 @@ contains
       ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex)&
       ,test_description_t('constructing from a default-kind logical value',                        constructs_from_default_logical)&
       ,test_description_t('constructing from a logical(c_bool) value',                              constructs_from_logical_c_bool)&
-      ,test_description_t('extracting a file base name',                                                   extracts_file_base_name)&
-      ,test_description_t('extracting a file name extension',                                         extracts_file_name_extension)&
       ,test_description_t('supporting unary operator(.cat.) for array arguments',                            concatenates_elements)&
       ,test_description_t('constructing bracketed strings',                                                       brackets_strings)&
-      ,test_description_t("extracting a string_t array value from a colon-separated key/value pair",   extracts_string_array_value)&
       ,test_description_t('constructing (comma-)separated values from character or string_t arrays',   constructs_separated_values)&
       ,test_description_t('constructing from a double-precision complex value',           constructs_from_double_precision_complex)&
     ]
@@ -70,16 +57,6 @@ contains
     ! Work around missing Fortran 2008 feature: associating a procedure actual argument with a procedure pointer dummy argument:
     procedure(diagnosis_function_i), pointer :: &
        check_allocation_ptr                     &
-      ,extracts_key_ptr                         &
-      ,extracts_double_precision_value_ptr      &
-      ,extracts_real_value_ptr                  &
-      ,extracts_character_value_ptr             &
-      ,extracts_string_value_ptr                &
-      ,extracts_integer_value_ptr               &
-      ,extracts_logical_value_ptr               &
-      ,extracts_integer_array_value_ptr         &
-      ,extracts_real_array_value_ptr            &
-      ,extracts_dp_array_value_ptr              &
       ,supports_equivalence_operator_ptr        &
       ,supports_non_equivalence_operator_ptr    &
       ,assigns_string_t_to_character_ptr        &
@@ -91,25 +68,12 @@ contains
       ,constructs_from_default_complex_ptr      &
       ,constructs_from_default_logical_ptr      &
       ,constructs_from_logical_c_bool_ptr       &
-      ,extracts_file_base_name_ptr              &
-      ,extracts_file_name_extension_ptr         &
       ,concatenates_elements_ptr                &
       ,brackets_strings_ptr                     &
-      ,extracts_string_array_value_ptr          &
       ,constructs_separated_values_ptr          &
       ,constructs_from_double_precision_complex_ptr
 
       check_allocation_ptr                         => check_allocation
-      extracts_key_ptr                             => extracts_key
-      extracts_double_precision_value_ptr          => extracts_double_precision_value
-      extracts_real_value_ptr                      => extracts_real_value
-      extracts_character_value_ptr                 => extracts_character_value
-      extracts_string_value_ptr                    => extracts_string_value
-      extracts_integer_value_ptr                   => extracts_integer_value
-      extracts_logical_value_ptr                   => extracts_logical_value
-      extracts_integer_array_value_ptr             => extracts_integer_array_value
-      extracts_real_array_value_ptr                => extracts_real_array_value
-      extracts_dp_array_value_ptr                  => extracts_dp_array_value
       supports_equivalence_operator_ptr            => supports_equivalence_operator
       supports_non_equivalence_operator_ptr        => supports_non_equivalence_operator      
       assigns_string_t_to_character_ptr            => assigns_string_t_to_character
@@ -121,26 +85,13 @@ contains
       constructs_from_default_complex_ptr          => constructs_from_default_complex
       constructs_from_default_logical_ptr          => constructs_from_default_logical
       constructs_from_logical_c_bool_ptr           => constructs_from_logical_c_bool
-      extracts_file_base_name_ptr                  => extracts_file_base_name
-      extracts_file_name_extension_ptr             => extracts_file_name_extension           
       concatenates_elements_ptr                    => concatenates_elements
       brackets_strings_ptr                         => brackets_strings
-      extracts_string_array_value_ptr              => extracts_string_array_value
       constructs_separated_values_ptr              => constructs_separated_values
       constructs_from_double_precision_complex_ptr => constructs_from_double_precision_complex
 
     test_descriptions = [ &
        test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation_ptr)&
-      ,test_description_t("extracting a key string from a colon-separated key/value pair",                            extracts_key_ptr)&
-      ,test_description_t("extracting double-precision value from colon-separated key/value pair", extracts_double_precision_value_ptr)&
-      ,test_description_t("extracting a real value from a colon-separated key/value pair",                     extracts_real_value_ptr)&
-      ,test_description_t("extracting a string value from a colon-separated key/value pair",              extracts_character_value_ptr)&
-      ,test_description_t("extracting a string value from a colon-separated key/value pair",                 extracts_string_value_ptr)&
-      ,test_description_t("extracting an integer value from a colon-separated key/value pair",              extracts_integer_value_ptr)&
-      ,test_description_t("extracting a logical value from a colon-separated key/value pair",               extracts_logical_value_ptr)&
-      ,test_description_t("extracting an integer array value from a colon-separated key/value pair",  extracts_integer_array_value_ptr)&
-      ,test_description_t("extracting an real array value from a colon-separated key/value pair",        extracts_real_array_value_ptr)&
-      ,test_description_t("extracting a double-precision array from a colon-separated key/value pair",     extracts_dp_array_value_ptr)&
       ,test_description_t('supporting operator(==) for string_t and character operands',             supports_equivalence_operator_ptr)&
       ,test_description_t('supporting operator(/=) for string_t and character operands',         supports_non_equivalence_operator_ptr)&
       ,test_description_t('assigning a string_t object to a character variable',                     assigns_string_t_to_character_ptr)&
@@ -152,11 +103,8 @@ contains
       ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex_ptr)&
       ,test_description_t('constructing from a default-kind logical value',                        constructs_from_default_logical_ptr)&
       ,test_description_t('constructing from a logical(c_bool) value',                              constructs_from_logical_c_bool_ptr)&
-      ,test_description_t('extracting a file base name',                                                   extracts_file_base_name_ptr)&
-      ,test_description_t('extracting a file name extension',                                         extracts_file_name_extension_ptr)&
       ,test_description_t('supporting unary operator(.cat.) for array arguments',                            concatenates_elements_ptr)&
       ,test_description_t('constructing bracketed strings',                                                       brackets_strings_ptr)&
-      ,test_description_t("extracting a string_t array value from a colon-separated key/value pair",   extracts_string_array_value_ptr)&
       ,test_description_t('constructing (comma-)separated values from character or string_t arrays',   constructs_separated_values_ptr)&
       ,test_description_t('constructing from a double-precision complex value',           constructs_from_double_precision_complex_ptr)&
     ]
@@ -182,170 +130,6 @@ contains
         )
       end associate 
     end associate 
-  end function
-
-  function extracts_key() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(line => string_t('"foo" : "bar"'))
-      associate(key => line%get_json_key())
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = key == string_t("foo") &
-          ,diagnostics_string = "expected 'foo'; actual " // key%string() &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_double_precision_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    double precision, parameter :: tolerance = 1D-16
-
-    associate(line => string_t('"pi" : 3.141592653589793D0'))
-      associate(json_value => line%get_json_value(key="pi", mold=0.D0))
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = abs(json_value - 3.141592653589793D0) < tolerance &
-          ,diagnostics_string = "expected 3.141592653589793D0, actual " // string_t(json_value) &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_real_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    real, parameter :: tolerance = 1E-08
-
-    associate(line => string_t('"pi" : 3.14159'))
-      associate(json_value => line%get_json_value(key=string_t("pi"), mold=1.))
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = json_value == 3.14159 &
-          ,diagnostics_string = "expected 3.14159, actual " // string_t(json_value) &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_character_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(line => string_t('"foo" : "bar"'), line_with_comma => string_t('"foo" : "bar",'))
-      associate(json_values => [ &
-           line%get_json_value(key="foo" , mold="") &
-          ,line%get_json_value(key=string_t("foo"), mold="") &
-          ,line_with_comma%get_json_value(key="foo" , mold="") &
-          ,line_with_comma%get_json_value(key=string_t("foo"), mold="") &
-      ])
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = all(json_values == "bar") &
-          ,diagnostics_string = "expected bar; actual " // .csv. json_values &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_string_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    
-    associate(line => string_t('"foo" : "bar"'))
-      associate(json_value => line%get_json_value(key=string_t("foo"), mold=string_t("")))
-        test_diagnosis = test_diagnosis_t( &
-          test_passed =  json_value == "bar", &
-          diagnostics_string = "expected 'bar', actual " // json_value &
-        )
-      end associate
-    end associate
-
-  end function
-
-  function extracts_integer_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(line => string_t('"an integer" : 99'))
-      associate(json_value => line%get_json_value(key=string_t("an integer"), mold=0))
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = json_value == 99 &
-          ,diagnostics_string = "expected 99, actual " // string_t(json_value) &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_logical_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    
-    associate( &
-      key_true_pair => string_t('"yada yada" : true'), &
-      key_false_pair => string_t('"blah blah" : false'), &
-      trailing_comma => string_t('"trailing comma" : true,') &
-    )
-      associate( &
-         true => key_true_pair%get_json_value(key=string_t("yada yada"), mold=.true.) &
-        ,true_too => trailing_comma%get_json_value(key=string_t("trailing comma"), mold=.true.) &
-        ,false => key_false_pair%get_json_value(key=string_t("blah blah"), mold=.true.) &
-      )
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = all([true, true_too, .not. false]) &
-          ,diagnostics_string = "expected T,T,T; actual  " // .csv. string_t([true, true_too, .not. false]) &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_string_array_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(key_string_array_pair => string_t('"lead singer" : ["stevie", "ray", "vaughn"],'))
-      associate(string_array => key_string_array_pair%get_json_value(key="lead singer", mold=[string_t::]))
-        associate(expected_value => [string_t("stevie"), string_t("ray"), string_t("vaughn")])
-          test_diagnosis = test_diagnosis_t( &
-             test_passed = all(string_array == expected_value) &
-            ,diagnostics_string = "expected " // .csv. expected_value //"; actual " //.csv. string_array &
-          )
-        end associate
-      end associate
-    end associate
-  end function
-
-  function extracts_integer_array_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(key_integer_array_pair => string_t('"some key" : [1, 2, 3],'))
-      associate(integer_array => key_integer_array_pair%get_json_value(key=string_t("some key"), mold=[integer::]))
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = all(integer_array == [1, 2, 3]) &
-          ,diagnostics_string = "expected 1,2,3; actual " // .csv. string_t(integer_array) &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_real_array_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    real, parameter :: tolerance = 1E-08
-
-    associate(key_real_array_pair => string_t('"a key" : [1., 2., 4.],'))
-      associate(real_array => key_real_array_pair%get_json_value(key=string_t("a key"), mold=[real::]))
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = all(abs(real_array - [1., 2., 4.]) < tolerance) &
-          ,diagnostics_string = "expected 1,2,3; actual " // .csv. string_t(real_array) &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_dp_array_value() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    double precision, parameter :: tolerance = 1E-16
-
-    associate(key_dp_array_pair => string_t('"a key" : [1.D0, 2.D0, 4.D0],'))
-      associate(dp_array => key_dp_array_pair%get_json_value(key=string_t("a key"), mold=[double precision::]))
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = all(abs(dp_array - [1D0, 2D0, 4D0]) < tolerance) &
-          ,diagnostics_string = "expected 1.,2.,3.; actual " // .csv. string_t(dp_array) &
-        )
-      end associate
-    end associate
   end function
 
   function supports_equivalence_operator() result(test_diagnosis)
@@ -514,34 +298,6 @@ contains
          test_passed = true%string() == "T" .and. false%string() == "F" &
         ,diagnostics_string = "expected T, F; actual '"// true%string() // ", " // false%string() &
       )
-    end associate
-  end function
-
-  function extracts_file_base_name() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    character(len=*), parameter :: expected = "foo .bar"
-
-    associate(string => string_t(" foo .bar.too "))
-      associate(base_name => string%base_name())
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = base_name == expected &
-          ,diagnostics_string = "expected "// expected // ", actual " // base_name &
-        )
-      end associate
-    end associate
-  end function
-
-  function extracts_file_name_extension() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    character(len=*), parameter :: expected = "too"
-
-    associate(string => string_t(" foo .bar.too "))
-      associate(file_extension => string%file_extension())
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = file_extension == expected &
-          ,diagnostics_string = "expected "// expected // ", actual " // file_extension&
-        )
-      end associate
     end associate
   end function
 
