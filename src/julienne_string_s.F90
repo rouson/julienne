@@ -18,42 +18,6 @@ contains
     new_string%string_ = string
   end procedure
 
-  module procedure from_default_integer
-    allocate(character(len=integer_width_supremum) :: string%string_)
-    write(string%string_, '(g0)') i
-    string%string_ = trim(adjustl(string%string_))
-  end procedure
-
-  module procedure from_default_real
-    allocate(character(len=double_precision_width_supremum) :: string%string_)
-    write(string%string_, '(g20.13)') x
-    string%string_ = trim(adjustl(string%string_))
-  end procedure
-
-  module procedure from_double_precision
-    allocate(character(len=double_precision_width_supremum) :: string%string_)
-    write(string%string_, '(g20.13)') x
-    string%string_ = trim(adjustl(string%string_))
-  end procedure
-
-  module procedure from_default_logical
-    allocate(character(len=logical_width) :: string%string_)
-    write(string%string_, '(g0)') b
-    string%string_ = trim(adjustl(string%string_))
-  end procedure
-
-  module procedure from_default_complex
-    allocate(character(len=2*default_real_width_supremum + 2*parenthesis_width + comma_width) :: string%string_)
-    write(string%string_, '("(",g20.13,",",g20.13,")")') z
-    string%string_ = trim(adjustl(string%string_))
-  end procedure
-
-  module procedure from_double_precision_complex
-    allocate(character(len=space + 2*double_precision_width_supremum + 2*parenthesis_width + comma_width) :: string%string_)
-    write(string%string_, '("(",g20.13,",",g20.13,")")') z
-    string%string_ = trim(adjustl(string%string_))
-  end procedure
-
   module procedure concatenate_elements
     integer s 
 

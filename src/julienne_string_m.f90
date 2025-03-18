@@ -42,42 +42,6 @@ module julienne_string_m
       type(string_t) new_string
     end function
 
-    elemental module function from_default_integer(i) result(string)
-      implicit none
-      integer, intent(in) :: i
-      type(string_t) string
-    end function
-
-    elemental module function from_default_real(x) result(string)
-      implicit none
-      real, intent(in) :: x
-      type(string_t) string
-    end function
-
-    elemental module function from_double_precision(x) result(string)
-      implicit none
-      double precision, intent(in) :: x
-      type(string_t) string
-    end function
-
-    elemental module function from_default_logical(b) result(string)
-      implicit none
-      logical, intent(in) :: b
-      type(string_t) string
-    end function
-
-    elemental module function from_default_complex(z) result(string)
-      implicit none
-      complex, intent(in) :: z
-      type(string_t) string
-    end function
-
-    elemental module function from_double_precision_complex(z) result(string)
-      implicit none
-      complex(kind=kind(1D0)), intent(in) :: z
-      type(string_t) string
-    end function
-
   end interface
 
   interface operator(.cat.)
