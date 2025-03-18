@@ -19,36 +19,14 @@ contains
     lhs_eq_rhs = lhs%string_ == rhs%string_
   end function
 
-  elemental function bracket(self, opening, closing) result(bracketed_self)
+  elemental function bracket(self) result(bracketed_self)
     class(string_t), intent(in) :: self
-    character(len=*), intent(in), optional :: opening, closing
     type(string_t) bracketed_self
-  
-    character(len=:), allocatable :: actual_opening, actual_closing
-
-    associate(opening_present => present(opening))
-
-      if (opening_present) then
-        actual_opening = opening
-      else
-        actual_opening = "[" 
-      end if
-
-      if (present(closing)) then
-        actual_closing = closing
-      else if(opening_present) then
-        actual_closing = actual_opening
-      else
-        actual_closing = "]" 
-      end if
-
-    end associate
-
-    bracketed_self = string_t(actual_opening // self%string_ // actual_closing)
-
+    bracketed_self = string_t("[" // self%string_ // "]")
   end function
 
 end module
+
   use julienne_string_m
   implicit none
   type(string_t) array(1)
