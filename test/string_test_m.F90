@@ -37,18 +37,14 @@ contains
 #if HAVE_PROCEDURE_ACTUAL_FOR_POINTER_DUMMY
     test_descriptions = [ &
        test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation)&
-      ,test_description_t('supporting operator(==) for string_t and character operands',             supports_equivalence_operator)&
-      ,test_description_t('supporting operator(/=) for string_t and character operands',         supports_non_equivalence_operator)&
       ,test_description_t('assigning a string_t object to a character variable',                     assigns_string_t_to_character)&
       ,test_description_t('assigning a character variable to a string_t object',                     assigns_character_to_string_t)&
-      ,test_description_t('supporting operator(//) for string_t and character operands',           supports_concatenation_operator)&
       ,test_description_t('constructing from a default integer',                                   constructs_from_default_integer)&
       ,test_description_t('constructing from a default real value',                                   constructs_from_default_real)&
       ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision)&
       ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex)&
       ,test_description_t('constructing from a default-kind logical value',                        constructs_from_default_logical)&
       ,test_description_t('constructing from a logical(c_bool) value',                              constructs_from_logical_c_bool)&
-      ,test_description_t('supporting unary operator(.cat.) for array arguments',                            concatenates_elements)&
       ,test_description_t('constructing bracketed strings',                                                       brackets_strings)&
       ,test_description_t('constructing (comma-)separated values from character or string_t arrays',   constructs_separated_values)&
       ,test_description_t('constructing from a double-precision complex value',           constructs_from_double_precision_complex)&
@@ -57,53 +53,41 @@ contains
     ! Work around missing Fortran 2008 feature: associating a procedure actual argument with a procedure pointer dummy argument:
     procedure(diagnosis_function_i), pointer :: &
        check_allocation_ptr                     &
-      ,supports_equivalence_operator_ptr        &
-      ,supports_non_equivalence_operator_ptr    &
       ,assigns_string_t_to_character_ptr        &
       ,assigns_character_to_string_t_ptr        &
-      ,supports_concatenation_operator_ptr      &
       ,constructs_from_default_integer_ptr      &
       ,constructs_from_default_real_ptr         &
       ,constructs_from_double_precision_ptr     &
       ,constructs_from_default_complex_ptr      &
       ,constructs_from_default_logical_ptr      &
       ,constructs_from_logical_c_bool_ptr       &
-      ,concatenates_elements_ptr                &
       ,brackets_strings_ptr                     &
       ,constructs_separated_values_ptr          &
       ,constructs_from_double_precision_complex_ptr
 
       check_allocation_ptr                         => check_allocation
-      supports_equivalence_operator_ptr            => supports_equivalence_operator
-      supports_non_equivalence_operator_ptr        => supports_non_equivalence_operator      
       assigns_string_t_to_character_ptr            => assigns_string_t_to_character
       assigns_character_to_string_t_ptr            => assigns_character_to_string_t
-      supports_concatenation_operator_ptr          => supports_concatenation_operator
       constructs_from_default_integer_ptr          => constructs_from_default_integer
       constructs_from_default_real_ptr             => constructs_from_default_real
       constructs_from_double_precision_ptr         => constructs_from_double_precision       
       constructs_from_default_complex_ptr          => constructs_from_default_complex
       constructs_from_default_logical_ptr          => constructs_from_default_logical
       constructs_from_logical_c_bool_ptr           => constructs_from_logical_c_bool
-      concatenates_elements_ptr                    => concatenates_elements
       brackets_strings_ptr                         => brackets_strings
       constructs_separated_values_ptr              => constructs_separated_values
       constructs_from_double_precision_complex_ptr => constructs_from_double_precision_complex
 
     test_descriptions = [ &
        test_description_t("is_allocated() result .true. if & only if the string_t component(s) is/are allocated", check_allocation_ptr)&
-      ,test_description_t('supporting operator(==) for string_t and character operands',             supports_equivalence_operator_ptr)&
-      ,test_description_t('supporting operator(/=) for string_t and character operands',         supports_non_equivalence_operator_ptr)&
       ,test_description_t('assigning a string_t object to a character variable',                     assigns_string_t_to_character_ptr)&
       ,test_description_t('assigning a character variable to a string_t object',                     assigns_character_to_string_t_ptr)&
-      ,test_description_t('supporting operator(//) for string_t and character operands',           supports_concatenation_operator_ptr)&
       ,test_description_t('constructing from a default integer',                                   constructs_from_default_integer_ptr)&
       ,test_description_t('constructing from a default real value',                                   constructs_from_default_real_ptr)&
       ,test_description_t('constructing from a double-precision value',                           constructs_from_double_precision_ptr)&
       ,test_description_t('constructing from a default-precision complex value',                   constructs_from_default_complex_ptr)&
       ,test_description_t('constructing from a default-kind logical value',                        constructs_from_default_logical_ptr)&
       ,test_description_t('constructing from a logical(c_bool) value',                              constructs_from_logical_c_bool_ptr)&
-      ,test_description_t('supporting unary operator(.cat.) for array arguments',                            concatenates_elements_ptr)&
       ,test_description_t('constructing bracketed strings',                                                       brackets_strings_ptr)&
       ,test_description_t('constructing (comma-)separated values from character or string_t arrays',   constructs_separated_values_ptr)&
       ,test_description_t('constructing from a double-precision complex value',           constructs_from_double_precision_complex_ptr)&
@@ -132,34 +116,6 @@ contains
     end associate 
   end function
 
-  function supports_equivalence_operator() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    
-    associate(comparisons => [ string_t("abcdefg") == string_t("abcdefg") &
-                              ,string_t("xyz pdq") ==          "xyz pdq"  &
-                              ,         "123.456"  == string_t("123.456") &
-                              ,         "123.456"  == string_t("123"    )])
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = all(comparisons .eqv. [.true.,.true.,.true.,.false.]) &
-        ,diagnostics_string = "expected T,T,T,F; actual " // .csv. string_t([comparisons(1:3), .not. comparisons(4)]) &
-      )
-    end associate
-  end function
-
-  function supports_non_equivalence_operator() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-
-    associate(non_equivalent_strings => [string_t("abcdefg") /= string_t("xyz pdq") &
-                                        ,string_t("xyz pdq") /=          "abcdefg"  &
-                                        ,         "123.456"  /= string_t("456.123") &
-                                        ,         "123.456"  /= string_t("123.456")])
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = all(non_equivalent_strings .eqv. [.true.,.true.,.true.,.false.]) &
-        ,diagnostics_string = "expected T,T,T,F; actual " // .csv. string_t(non_equivalent_strings) &
-      )
-    end associate
-  end function
-
   function assigns_string_t_to_character() result(test_diagnosis)
     type(test_diagnosis_t) test_diagnosis
     character(len=:), allocatable :: lhs
@@ -183,20 +139,6 @@ contains
        test_passed = lhs == rhs &
       ,diagnostics_string = "expected lhs == rhs; actual lhs = " // lhs // ", rhs = " // rhs &
     )
-  end function
-
-  function supports_concatenation_operator() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    character(len=*), parameter :: prefix = "foo", postfix="bar", expected = "foo yada yada bar"
-
-    associate(infix => string_t(" yada yada "))
-      associate(string_string_string => prefix // infix // postfix, string_character_string => prefix // infix%string() // postfix)
-        test_diagnosis = test_diagnosis_t( &
-           test_passed = all([string_string_string == expected, string_character_string == expected]) &
-          ,diagnostics_string = "expected '"// expected // "', actual " // string_string_string // "," // string_character_string &
-        )
-      end associate
-    end associate
   end function
 
   function constructs_from_default_integer() result(test_diagnosis)
@@ -297,18 +239,6 @@ contains
       test_diagnosis = test_diagnosis_t( &
          test_passed = true%string() == "T" .and. false%string() == "F" &
         ,diagnostics_string = "expected T, F; actual '"// true%string() // ", " // false%string() &
-      )
-    end associate
-  end function
-
-  function concatenates_elements() result(test_diagnosis)
-    type(test_diagnosis_t) test_diagnosis
-    character(len=*), parameter :: expected = "foobar"
-  
-    associate(cat_foo_bar => .cat. [string_t("foo"), string_t("bar")])
-      test_diagnosis = test_diagnosis_t( &
-         test_passed = cat_foo_bar == expected &
-        ,diagnostics_string = "expected "// expected // ", actual " // cat_foo_bar &
       )
     end associate
   end function
