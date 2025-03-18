@@ -23,7 +23,7 @@ contains
 
   type(string_t) elemental function bracket(self)
     type(string_t), intent(in) :: self
-    bracket = string_t("[" // self%string_ // "]")
+    bracket%string_ = "[" // self%string_ // "]"
   end function
 
 end
