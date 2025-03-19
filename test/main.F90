@@ -1,6 +1,10 @@
   use julienne_string_m, only : string_t
-  use julienne_test_diagnosis_m, only : test_diagnosis_t
   implicit none
+
+  type test_diagnosis_t
+    logical test_passed_
+    character(len=:), allocatable :: diagnostics_string_
+  end type
 
   abstract interface
     function vector_diagnosis_function_i() result(diagnoses)
