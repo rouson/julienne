@@ -16,15 +16,10 @@ module julienne_string_m
     procedure :: as_character
     generic :: string => as_character
     procedure :: is_allocated
-    procedure :: file_extension
-    procedure :: base_name
     procedure :: bracket
     generic :: operator(//)   => string_t_cat_string_t, string_t_cat_character, character_cat_string_t
-    generic :: assignment(= ) => assign_string_t_to_character, assign_character_to_string_t
-    procedure, private :: assign_character_to_string_t
     procedure, private :: string_t_cat_string_t, string_t_cat_character
     procedure, private, pass(rhs) :: character_cat_string_t
-    procedure, private, pass(rhs) :: assign_string_t_to_character
   end type
 
   interface string_t
@@ -99,18 +94,6 @@ module julienne_string_m
       logical string_allocated
     end function
 
-    elemental module function file_extension(self) result(extension)
-      !! result contains all characters in file_name after the last dot (.)
-      class(string_t), intent(in) :: self
-      type(string_t) extension
-    end function
-
-    pure module function base_name(self) result(base)
-      !! result contains all characters in file_name before the last dot (.)
-      class(string_t), intent(in) :: self
-      type(string_t) base
-    end function
-
     pure module function string_t_cat_string_t(lhs, rhs) result(lhs_cat_rhs)
       implicit none
       class(string_t), intent(in) :: lhs, rhs
@@ -130,18 +113,6 @@ module julienne_string_m
       class(string_t), intent(in) :: rhs
       type(string_t) lhs_cat_rhs
     end function
-
-    pure module subroutine assign_character_to_string_t(lhs, rhs)
-      implicit none
-      class(string_t), intent(inout) :: lhs
-      character(len=*), intent(in) :: rhs
-    end subroutine
-
-    pure module subroutine assign_string_t_to_character(lhs, rhs)
-      implicit none
-      class(string_t), intent(in) :: rhs
-      character(len=:), intent(out), allocatable :: lhs
-    end subroutine
 
     elemental module function bracket(self, opening, closing) result(bracketed_self)
       implicit none

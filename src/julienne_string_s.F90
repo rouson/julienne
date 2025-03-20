@@ -87,42 +87,6 @@ contains
 
   end procedure
 
-  module procedure file_extension
-    character(len=:), allocatable :: name_
-
-    name_ = trim(adjustl(self%string()))
-
-    associate( dot_location => index(name_, '.', back=.true.) )
-      if (dot_location < len(name_)) then
-        extension = trim(adjustl(name_(dot_location+1:)))
-      else
-        extension = ""
-      end if
-    end associate
-  end procedure
-
-  module procedure base_name
-    character(len=:), allocatable :: name_
-
-    name_ = self%string()
-    
-    associate(dot_location => index(name_, '.', back=.true.) )
-      if (dot_location < len(name_)) then
-        base = trim(adjustl(name_(1:dot_location-1)))
-      else
-        base = ""
-      end if
-    end associate
-  end procedure
-
-  module procedure assign_string_t_to_character
-    lhs = rhs%string()
-  end procedure
-   
-  module procedure assign_character_to_string_t
-    lhs%string_ = rhs
-  end procedure
-
   module procedure string_t_cat_string_t
     lhs_cat_rhs = string_t(lhs%string_ // rhs%string_)
   end procedure
