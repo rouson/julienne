@@ -1,7 +1,6 @@
 ! Copyright (c) 2024, The Regents of the University of California and Sourcery Institute
 ! Terms of use are as specified in LICENSE.txt
 module julienne_string_m
-  use assert_m, only : characterizable_t
   use iso_c_binding, only : c_bool
   implicit none
   
@@ -9,12 +8,10 @@ module julienne_string_m
   public :: string_t
   public :: array_of_strings
 
-  type, extends(characterizable_t) :: string_t
+  type string_t
     private
     character(len=:), allocatable :: string_
   contains
-    procedure :: as_character
-    generic :: string => as_character
     procedure :: is_allocated
     procedure :: bracket
     generic :: operator(//)   => string_t_cat_string_t, string_t_cat_character, character_cat_string_t
@@ -75,12 +72,6 @@ module julienne_string_m
   end interface
 
   interface
-
-    pure module function as_character(self) result(raw_string)
-      implicit none
-      class(string_t), intent(in) :: self
-      character(len=:), allocatable :: raw_string
-    end function
 
     pure module function array_of_strings(delimited_strings, delimiter) result(strings_array)
       implicit none

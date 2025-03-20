@@ -11,10 +11,6 @@ submodule(julienne_string_m) julienne_string_s
   
 contains
 
-  module procedure as_character
-    raw_string = self%string_
-  end procedure
-
   module procedure is_allocated
     string_allocated = allocated(self%string_)
   end procedure
