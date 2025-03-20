@@ -3,12 +3,12 @@
   type string_t
   end type
 
-  type vector_test_description_t
+  type test_description_t
     type(string_t), allocatable :: description_
-    procedure(diagnoses), pointer, nopass :: vector_diagnosis_function_
+    procedure(diagnoses), pointer, nopass :: diagnosis_function_
   end type
 
-  associate(vector_test_description => construct_from_strings(string_t(), diagnoses))
+  associate(test_description => construct_from_strings(string_t(), diagnoses))
   end associate
 
 contains
@@ -18,12 +18,12 @@ contains
     diagnoses = .true.
   end function
 
-  function construct_from_strings(description, vector_diagnosis_function) result(vector_test_description)
+  function construct_from_strings(description, diagnosis_function) result(test_description)
     type(string_t), intent(in) :: description
-    procedure(diagnoses), intent(in), pointer :: vector_diagnosis_function
-    type(vector_test_description_t) vector_test_description
-    vector_test_description%description_ = description
-    vector_test_description%vector_diagnosis_function_ => vector_diagnosis_function
+    procedure(diagnoses), intent(in), pointer :: diagnosis_function
+    type(test_description_t) test_description
+    test_description%description_ = description
+    test_description%diagnosis_function_ => diagnosis_function
   end function
 
 end
