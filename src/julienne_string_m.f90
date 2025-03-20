@@ -14,9 +14,6 @@ module julienne_string_m
   contains
     procedure :: is_allocated
     procedure :: bracket
-    generic :: operator(//)   => string_t_cat_string_t, string_t_cat_character, character_cat_string_t
-    procedure, private :: string_t_cat_string_t, string_t_cat_character
-    procedure, private, pass(rhs) :: character_cat_string_t
   end type
 
   interface string_t
@@ -83,26 +80,6 @@ module julienne_string_m
       implicit none
       class(string_t), intent(in) :: self
       logical string_allocated
-    end function
-
-    pure module function string_t_cat_string_t(lhs, rhs) result(lhs_cat_rhs)
-      implicit none
-      class(string_t), intent(in) :: lhs, rhs
-      type(string_t) lhs_cat_rhs
-    end function
-
-    pure module function string_t_cat_character(lhs, rhs) result(lhs_cat_rhs)
-      implicit none
-      class(string_t), intent(in) :: lhs
-      character(len=*), intent(in) :: rhs
-      type(string_t) lhs_cat_rhs
-    end function
-
-    pure module function character_cat_string_t(lhs, rhs) result(lhs_cat_rhs)
-      implicit none
-      character(len=*), intent(in) :: lhs
-      class(string_t), intent(in) :: rhs
-      type(string_t) lhs_cat_rhs
     end function
 
     elemental module function bracket(self, opening, closing) result(bracketed_self)

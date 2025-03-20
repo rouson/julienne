@@ -83,18 +83,6 @@ contains
 
   end procedure
 
-  module procedure string_t_cat_string_t
-    lhs_cat_rhs = string_t(lhs%string_ // rhs%string_)
-  end procedure
-   
-  module procedure string_t_cat_character
-    lhs_cat_rhs = string_t(lhs%string_ // rhs)
-  end procedure
-
-  module procedure character_cat_string_t
-    lhs_cat_rhs = string_t(lhs // rhs%string_)
-  end procedure
-   
   module procedure bracket
   
     character(len=:), allocatable :: actual_opening, actual_closing
