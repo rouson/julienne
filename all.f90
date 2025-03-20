@@ -2,23 +2,22 @@
 
   type test_description_t
     character(len=:), allocatable :: description_
-    procedure(diagnoses), pointer, nopass :: diagnosis_function_
+    procedure(diagnosis), pointer, nopass :: diagnosis_function_
   end type
 
-  associate(test_description => test_description("", diagnoses))
+  associate(test_description => test_description(diagnosis))
   end associate
 
 contains
 
-  function diagnoses()
-    logical, allocatable :: diagnoses
-    diagnoses = .true.
+  function diagnosis()
+    logical, allocatable :: diagnosis
+    diagnosis = .true.
   end function
 
-  type(test_description_t) function test_description(description, diagnosis_function)
-    character(len=*) description
-    procedure(diagnoses), pointer :: diagnosis_function
-    test_description%description_ = description
+  type(test_description_t) function test_description(diagnosis_function)
+    procedure(diagnosis), pointer :: diagnosis_function
+    test_description%description_ = ""
     test_description%diagnosis_function_ => diagnosis_function
   end function
 
