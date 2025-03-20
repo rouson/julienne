@@ -1,13 +1,8 @@
-module julienne_string_m
   implicit none
-  
+
   type string_t
     character(len=:), allocatable :: string_
   end type
-
-end module julienne_string_m
-  use julienne_string_m, only : string_t
-  implicit none
 
   type test_diagnosis_t
     logical test_passed_
