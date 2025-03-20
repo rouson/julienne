@@ -1,11 +1,11 @@
   implicit none
 
   type test_description_t
-    character(len=:), allocatable :: description_
+    integer, allocatable :: i_
     procedure(diagnosis), pointer, nopass :: diagnosis_function_
   end type
 
-  associate(test_description => test_description_t("",diagnosis))
+  associate(test_description => test_description_t(0,diagnosis))
   end associate
 
 contains
