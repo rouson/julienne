@@ -11,9 +11,6 @@ module julienne_string_m
   type string_t
     private
     character(len=:), allocatable :: string_
-  contains
-    procedure :: is_allocated
-    procedure :: bracket
   end type
 
   interface string_t
@@ -74,19 +71,6 @@ module julienne_string_m
       implicit none
       character(len=*), intent(in) :: delimited_strings, delimiter
       type(string_t), allocatable :: strings_array(:)
-    end function
-
-    elemental module function is_allocated(self) result(string_allocated)
-      implicit none
-      class(string_t), intent(in) :: self
-      logical string_allocated
-    end function
-
-    elemental module function bracket(self, opening, closing) result(bracketed_self)
-      implicit none
-      class(string_t), intent(in) :: self
-      character(len=*), intent(in), optional :: opening, closing
-      type(string_t) bracketed_self
     end function
 
   end interface
