@@ -19,8 +19,8 @@ contains
   end function
 
   type(test_description_t) function test_description(description, diagnosis_function)
-    type(string_t), intent(in) :: description
-    procedure(diagnoses), intent(in), pointer :: diagnosis_function
+    type(string_t) description
+    procedure(diagnoses), pointer :: diagnosis_function
     test_description%description_ = description
     test_description%diagnosis_function_ => diagnosis_function
   end function
