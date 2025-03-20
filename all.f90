@@ -4,15 +4,10 @@
     character(len=:), allocatable :: string_
   end type
 
-  type test_diagnosis_t
-    character(len=:), allocatable :: diagnostics_string_
-  end type
-
   abstract interface
     function vector_diagnosis_function_i() result(diagnoses)
-      import test_diagnosis_t
       implicit none
-      type(test_diagnosis_t), allocatable :: diagnoses(:)
+      logical, allocatable :: diagnoses(:)
     end function
   end interface
 
@@ -26,9 +21,9 @@
 
 contains
 
-   function diagnoses()
-    type(test_diagnosis_t), allocatable :: diagnoses(:)
-    diagnoses = [test_diagnosis_t::] 
+ function diagnoses()
+    logical, allocatable :: diagnoses(:)
+    diagnoses = [logical::]
   end function
 
   function construct_from_strings(descriptions, vector_diagnosis_function) result(vector_test_description)
