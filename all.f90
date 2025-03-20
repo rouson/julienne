@@ -5,7 +5,6 @@
   end type
 
   type test_diagnosis_t
-    logical test_passed_
     character(len=:), allocatable :: diagnostics_string_
   end type
 
