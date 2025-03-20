@@ -1,14 +1,11 @@
   implicit none
 
-  type string_t
-  end type
-
   type test_description_t
-    type(string_t), allocatable :: description_
+    character(len=:), allocatable :: description_
     procedure(diagnoses), pointer, nopass :: diagnosis_function_
   end type
 
-  associate(test_description => test_description(string_t(), diagnoses))
+  associate(test_description => test_description("", diagnoses))
   end associate
 
 contains
@@ -19,7 +16,7 @@ contains
   end function
 
   type(test_description_t) function test_description(description, diagnosis_function)
-    type(string_t) description
+    character(len=*) description
     procedure(diagnoses), pointer :: diagnosis_function
     test_description%description_ = description
     test_description%diagnosis_function_ => diagnosis_function
