@@ -1,20 +1,19 @@
+module test_m
   implicit none
-  
-  type string_t
-    character(len=:), allocatable :: string_
+
+  type test_t
+    integer, allocatable :: i
   end type
 
-  print *, true([string()])
+  interface
+    pure module function construct_test() result(test)
+      implicit none
+      type(test_t) test
+    end function
+  end interface
 
 contains
-
-  type(string_t) function string()
-    string%string_ = ""
-  end function
-
-  logical elemental function true(rhs)
-    class(string_t), intent(in) :: rhs
-    true = .true.
-  end function
-
-end
+  module procedure construct_test
+    allocate(test%i, source = 0)
+  end procedure
+end module
