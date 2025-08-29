@@ -1,13 +1,17 @@
 ! Copyright (c) 2024-2025, The Regents of the University of California and Sourcery Institute
 ! Terms of use are as specified in LICENSE.txt
+
+#include "julienne-assert-macros.h"
 #include "assert_macros.h"
 
 submodule(julienne_string_m) julienne_string_s
   use assert_m
+  use julienne_assert_m, only : call_julienne_assert_
+  use julienne_test_diagnosis_m, only : operator(.equalsExpected.)
   implicit none
 
-  integer, parameter :: integer_width_supremum = 11, default_real_width_supremum = 20, double_precision_width_supremum = 25
-  integer, parameter :: logical_width=2, comma_width = 1, parenthesis_width = 1, space=1
+  integer, parameter :: default_integer_width_supremum = 11, default_real_width_supremum = 20, double_precision_width_supremum = 25
+  integer, parameter :: integer_c_size_t_width_supremum = 19, logical_width=2, comma_width = 1, parenthesis_width = 1, space=1
   
 contains
 
@@ -24,7 +28,13 @@ contains
   end procedure
 
   module procedure from_default_integer
-    allocate(character(len=integer_width_supremum) :: string%string_)
+    allocate(character(len=default_integer_width_supremum) :: string%string_)
+    write(string%string_, '(g0)') i
+    string%string_ = trim(adjustl(string%string_))
+  end procedure
+
+  module procedure from_integer_c_size_t
+    allocate(character(len=integer_c_size_t_width_supremum) :: string%string_)
     write(string%string_, '(g0)') i
     string%string_ = trim(adjustl(string%string_))
   end procedure
@@ -185,7 +195,7 @@ contains
   module procedure get_real
     character(len=:), allocatable :: raw_line, string_value
 
-    call_assert_diagnose(key==self%get_json_key(), "string_s(get_real): key==self%get_json_key()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
     associate(text_after_colon => raw_line(index(raw_line, ':')+1:))
@@ -204,7 +214,7 @@ contains
   module procedure get_double_precision
     character(len=:), allocatable :: raw_line, string_value
 
-    call_assert_diagnose(key==self%get_json_key(), "string_s(get_double_precision): key==self%get_json_key()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
     associate(text_after_colon => raw_line(index(raw_line, ':')+1:))
@@ -220,14 +230,20 @@ contains
 
   end procedure
 
-  module procedure get_character
-    associate(string_value => self%get_string(key, string_t(mold)))
+  module procedure get_character_with_string_key
+    associate(string_value => self%get_string_with_string_key(key, string_t(mold)))
       value_ = string_value%string()
     end associate
   end procedure
 
   module procedure get_character_with_character_key
-    associate(string_value => self%get_string(string_t(key), string_t(mold)))
+    associate(string_value => self%get_string_with_string_key(string_t(key), string_t(mold)))
+      value_ = string_value%string()
+    end associate
+  end procedure
+
+  module procedure get_string_with_character_key
+    associate(string_value => self%get_string_with_string_key(string_t(key), mold))
       value_ = string_value%string()
     end associate
   end procedure
@@ -241,7 +257,7 @@ contains
     character(len=:), allocatable :: raw_line
     integer i, comma, opening_quotes, closing_quotes
 
-    call_assert_diagnose(key==self%get_json_key(), "key==self%get_string_json()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
 
@@ -265,11 +281,11 @@ contains
     end associate
   end procedure
 
-  module procedure get_string
+  module procedure get_string_with_string_key
 
     character(len=:), allocatable :: raw_line
 
-    call_assert_diagnose(key==self%get_json_key(), "key==self%get_string_json()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
     associate(text_after_colon => raw_line(index(raw_line, ':')+1:))
@@ -293,7 +309,7 @@ contains
   module procedure get_logical
     character(len=:), allocatable :: raw_line, string_value
 
-    call_assert_diagnose(key==self%get_json_key(), "string_s(get_logical): key==self%get_json_key()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
     associate(text_after_colon => raw_line(index(raw_line, ':')+1:))
@@ -303,7 +319,7 @@ contains
         else 
           string_value = trim(adjustl((text_after_colon(:trailing_comma-1))))
         end if
-        call_assert_diagnose(string_value=="true" .or. string_value=="false", 'string_s(get_logical): string_value=="true" .or. string_value="false"', string_value)
+        call_assert(any(string_value==['true ', 'false']))
         value_ = string_value == "true"
       end associate
     end associate
@@ -313,7 +329,7 @@ contains
   module procedure get_integer
     character(len=:), allocatable :: raw_line, string_value
 
-    call_assert_diagnose(key==self%get_json_key(), "string_s(get_logical): key==self%get_json_key()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
     associate(text_after_colon => raw_line(index(raw_line, ':')+1:))
@@ -354,7 +370,7 @@ contains
     real, allocatable :: real_array(:)
     integer i
 
-    call_assert_diagnose(key==self%get_json_key(), "string_s(get_{real,integer}_array): key==self%get_json_key()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
     associate(colon => index(raw_line, ":"))
@@ -378,7 +394,7 @@ contains
     double precision, allocatable :: double_precision_array(:)
     integer i
 
-    call_assert_diagnose(key==self%get_json_key(), "string_s(get_{double precision,integer}_array): key==self%get_json_key()", key)
+    call_julienne_assert(self%get_json_key() .equalsExpected. key)
 
     raw_line = self%string()
     associate(colon => index(raw_line, ":"))

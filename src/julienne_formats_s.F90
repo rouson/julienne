@@ -1,5 +1,6 @@
 ! Copyright (c) 2024-2025, The Regents of the University of California and Sourcery Institute
 ! Terms of use are as specified in LICENSE.txt
+
 submodule(julienne_formats_m) julienne_formats_s
   !! Construct separated-value formats 
   implicit none
@@ -10,8 +11,9 @@ contains
 
   module procedure separated_values
     character(len=*), parameter :: prefix = "(*(G0,:,'"
-    character(len=*), parameter :: suffix =           "'))"
+    character(len=*), parameter :: double_prefix = "(*(G25.20,:,'"
     character(len=*), parameter :: complex_prefix = "(*('(',G0,',',G0,')',:,'" 
+    character(len=*), parameter :: suffix = "'))"
 
     select rank(mold)
       rank(1)
@@ -19,7 +21,7 @@ contains
           type is(complex)
             format_string = complex_prefix // separator // suffix
           type is(double precision)
-            format_string = prefix // separator // suffix
+            format_string = double_prefix // separator // "'))"
           type is(real)
             format_string = prefix // separator // suffix
           type is(integer)

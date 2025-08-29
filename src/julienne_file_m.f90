@@ -1,5 +1,6 @@
 ! Copyright (c) 2024-2025, The Regents of the University of California and Sourcery Institute
 ! Terms of use are as specified in LICENSE.txt
+
 module julienne_file_m
   !! A representation of a file as an object
   use julienne_string_m, only : string_t
@@ -30,7 +31,7 @@ module julienne_file_m
       type(file_t) file_object
     end function
 
-    module function from_lines(lines) result(file_object)
+    pure module function from_lines(lines) result(file_object)
       implicit none
       type(string_t), intent(in) :: lines(:)
       type(file_t) file_object

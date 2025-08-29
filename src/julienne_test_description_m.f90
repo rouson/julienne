@@ -1,25 +1,16 @@
 ! Copyright (c) 2024-2025, The Regents of the University of California and Sourcery Institute
 ! Terms of use are as specified in LICENSE.txt
+
 module julienne_test_description_m
   !! Define an abstraction for describing test intentions and test functions
   use julienne_string_m, only : string_t
   use julienne_test_result_m, only : test_result_t
-  use julienne_test_diagnosis_m, only : test_diagnosis_t
+  use julienne_test_diagnosis_m, only : test_diagnosis_t, diagnosis_function_i
   implicit none
 
   private
   public :: test_description_t
-  public :: diagnosis_function_i
-
-  abstract interface
-
-    function diagnosis_function_i() result(test_diagnosis)
-      import test_diagnosis_t
-      implicit none
-      type(test_diagnosis_t) test_diagnosis
-    end function
-
-  end interface
+  public :: filter
 
   type test_description_t
     !! Encapsulate test descriptions and test-functions
@@ -84,6 +75,15 @@ module julienne_test_description_m
       implicit none
       class(test_description_t), intent(in) :: lhs, rhs
       logical lhs_eq_rhs
+    end function
+
+    module function filter(test_descriptions, subject) result(filtered_test_descriptions)
+      !! The result is .true. an array of test_description_t objects whose description_ or contains the substring specified 
+      !! by command-line --contains flag if present, or all test_descriptions if the subject contains the same substring 
+      implicit none
+      type(test_description_t), intent(in) :: test_descriptions(:)
+      character(len=*), intent(in) :: subject
+      type(test_description_t), allocatable :: filtered_test_descriptions(:)
     end function
 
   end interface

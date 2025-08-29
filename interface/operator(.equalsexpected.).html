@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="description" content="A standalone, minimal unit-testing and string/command-line-handling utility.">
+      <meta name="description" content="A Fortran 2023 correctness-checking framework supporting expressive idioms for writing assertions and tests">
     <meta name="author" content="Berkeley Lab" >
     <link rel="icon" href="../favicon.png">
 
@@ -94,7 +94,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 0.1% of total for procedures.</p>Including implementation: 7 statements,  0.1% of total for procedures.">7 statements</a>
+                 title="<p> 0.4% of total for procedures.</p>Including implementation: 39 statements,  0.4% of total for procedures.">39 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -146,7 +146,13 @@
       </a>
       <div id="funcs-0" class="collapse">
         <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../interface/operator(.equalsexpected.).html#proc-equals_expected_c_ptr">equals_expected_c_ptr</a>
+            <a class="list-group-item" href="../interface/operator(.equalsexpected.).html#proc-equals_expected_character">equals_expected_character</a>
+            <a class="list-group-item" href="../interface/operator(.equalsexpected.).html#proc-equals_expected_character_vs_string">equals_expected_character_vs_string</a>
             <a class="list-group-item" href="../interface/operator(.equalsexpected.).html#proc-equals_expected_integer">equals_expected_integer</a>
+            <a class="list-group-item" href="../interface/operator(.equalsexpected.).html#proc-equals_expected_integer_c_size_t">equals_expected_integer_c_size_t</a>
+            <a class="list-group-item" href="../interface/operator(.equalsexpected.).html#proc-equals_expected_string">equals_expected_string</a>
+            <a class="list-group-item" href="../interface/operator(.equalsexpected.).html#proc-equals_expected_string_vs_character">equals_expected_string_vs_character</a>
         </div>
       </div>
     </div>
@@ -171,6 +177,186 @@
 
         <h2>Functions</h2>
             <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-equals_expected_c_ptr"></span> <h3>private elemental module function equals_expected_c_ptr(actual, expected) result(test_diagnosis)  
+    <a href="../proc/equals_expected_c_ptr.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+</h3></div>
+    <div class="card-body">
+        
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-actual~6"></span>
+              type(c_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>actual</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-expected~6"></span>
+              type(c_ptr),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>expected</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/test_diagnosis_t.html'>test_diagnosis_t</a>)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-equals_expected_character"></span> <h3>private elemental module function equals_expected_character(actual, expected) result(test_diagnosis)  
+    <a href="../proc/equals_expected_character.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+</h3></div>
+    <div class="card-body">
+        
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-actual~9"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>actual</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-expected~9"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>expected</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/test_diagnosis_t.html'>test_diagnosis_t</a>)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-equals_expected_character_vs_string"></span> <h3>private elemental module function equals_expected_character_vs_string(actual, expected) result(test_diagnosis)  
+    <a href="../proc/equals_expected_character_vs_string.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+</h3></div>
+    <div class="card-body">
+        
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-actual~11"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>actual</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-expected~11"></span>
+              type(<a href='../type/string_t.html'>string_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>expected</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/test_diagnosis_t.html'>test_diagnosis_t</a>)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+            <div class="card">
     <div class="card-header codesum"><span class="anchor" id="proc-equals_expected_integer"></span> <h3>private elemental module function equals_expected_integer(actual, expected) result(test_diagnosis)  
     <a href="../proc/equals_expected_integer.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 </h3></div>
@@ -190,7 +376,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-actual~6"></span>
+              <span class="anchor" id="variable-actual~7"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -205,8 +391,188 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-expected~6"></span>
+              <span class="anchor" id="variable-expected~7"></span>
               integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>expected</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/test_diagnosis_t.html'>test_diagnosis_t</a>)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-equals_expected_integer_c_size_t"></span> <h3>private elemental module function equals_expected_integer_c_size_t(actual, expected) result(test_diagnosis)  
+    <a href="../proc/equals_expected_integer_c_size_t.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+</h3></div>
+    <div class="card-body">
+        
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-actual~8"></span>
+              integer(kind=c_size_t),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>actual</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-expected~8"></span>
+              integer(kind=c_size_t),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>expected</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/test_diagnosis_t.html'>test_diagnosis_t</a>)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-equals_expected_string"></span> <h3>private elemental module function equals_expected_string(actual, expected) result(test_diagnosis)  
+    <a href="../proc/equals_expected_string.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+</h3></div>
+    <div class="card-body">
+        
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-actual~10"></span>
+              type(<a href='../type/string_t.html'>string_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>actual</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-expected~10"></span>
+              type(<a href='../type/string_t.html'>string_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>expected</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='../type/test_diagnosis_t.html'>test_diagnosis_t</a>)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-equals_expected_string_vs_character"></span> <h3>private elemental module function equals_expected_string_vs_character(actual, expected) result(test_diagnosis)  
+    <a href="../proc/equals_expected_string_vs_character.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+</h3></div>
+    <div class="card-body">
+        
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-actual~12"></span>
+              type(<a href='../type/string_t.html'>string_t</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>actual</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-expected~12"></span>
+              character(len=*),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
@@ -249,7 +615,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-05-28 18:27 +0000             </p>
+ on 2025-08-29 01:21 +0000             </p>
           </div>
         </div>
         <br>
