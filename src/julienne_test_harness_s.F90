@@ -1,54 +1,103 @@
 ! Copyright (c) 2024-2025, The Regents of the University of California and Sourcery Institute
 ! Terms of use are as specified in LICENSE.txt
 
+#include "language-support.F90"
+
 submodule(julienne_test_harness_m) julienne_test_harness_s
+  use iso_fortran_env, only : int64, real64
   use julienne_command_line_m, only : command_line_t
+  use julienne_string_m, only : string_t
+  use julienne_multi_image_m, only : internal_this_image, internal_num_images, internal_error_stop
   implicit none
 
 contains
 
     module procedure component_constructor
-      test_harness%test_fixture_ = test_fixtures
+#ifdef NAGFOR
+      test_harness%test_fixture_ = test_fixtures ! avoid a nagfor internal compiler error
+#else
+      allocate(test_harness%test_fixture_, source = test_fixtures) ! eliminates a harmless gfortran warning
+#endif
     end procedure
 
     module procedure report_results
 
+      integer i, passes, tests, skips
+      integer(int64) start_time, end_time, clock_rate
+      integer, parameter :: ms_per_sec = 1000
+
+      passes=0; tests=0; skips=0
+
       call print_usage_info_and_stop_if_requested
+      call system_clock(start_time, clock_rate)
 
-      block
-        integer i, passes, tests, skips
+      do i = 1, size(self%test_fixture_)
+        call self%test_fixture_(i)%report(passes, tests, skips)
+      end do
 
-        passes=0; tests=0; skips=0
+      call system_clock(end_time)
 
-        do i = 1, size(self%test_fixture_)
-          call self%test_fixture_(i)%report(passes, tests, skips)
-        end do
-
-        print '(a,*(a,:,g0))', new_line(''), "_____ ", passes, " of ", tests, " tests passed. ", skips, " tests were skipped _____"
-
-        if (passes + skips /= tests) error stop "Some tests failed."
-      end block
+      associate(me => internal_this_image(), image_count => internal_num_images())
+        if (me==1) then
+          print *
+#if defined(__flang__) && !defined(__linux__)
+          ! workaround issue 155 observed on flang + macOS
+          print '(a,f0.3,a)', "Test-suite run time: ", (end_time - start_time)/(real(clock_rate, real64)*ms_per_sec), " seconds"
+#else
+          print '(a,f0.3,a)', "Test-suite run time: ", (end_time - start_time)/ real(clock_rate, real64            ), " seconds"
+#endif
+          print '(a,i0)',      "Number of images: ", image_count
+          print *
+          print '(*(a,:,i0))', "_____ ", passes, " of ", tests, " tests passed. ", skips, " tests were skipped _____"
+          print *
+        end if
+        if (passes + skips /= tests .and. me==1) call internal_error_stop("Some tests failed.")
+      end associate
 
     end procedure
 
     subroutine print_usage_info_and_stop_if_requested
 
-      associate(command_line => command_line_t())
-        block
-          character(len=*), parameter :: usage = &
-            new_line('') // new_line('') // &
-            'Usage: fpm test -- [--help] | [--contains <substring>]' // &
-            new_line('') // new_line('') // &
-            'where square brackets ([]) denote optional arguments, a pipe (|) separates alternative arguments,' // new_line('') // &
-            'angular brackets (<>) denote a user-provided value, and passing a substring limits execution to' // new_line('') // &
-            'the tests with test subjects or test descriptions containing the user-specified substring.' // new_line('')
+      character(len=*), parameter :: usage = &
+        new_line('') // new_line('') // &
+        'Usage: fpm test -- [--help] | [--contains <substring>]' // &
+        new_line('') // new_line('') // &
+        'where square brackets ([]) denote optional arguments, a pipe (|) separates alternative arguments,' // new_line('') // &
+        'angular brackets (<>) denote a user-provided value, and passing a substring limits execution to' // new_line('') // &
+        'the tests with test subjects or test descriptions containing the user-specified substring.' // new_line('')
 
-          if (command_line%argument_present([character(len=len("--help"))::"--help","-h"])) stop usage
-        end block
+      associate(me => internal_this_image())
+        associate(command_line => command_line_t())
+
+          if (command_line%argument_present([character(len=len("--help"))::"--help","-h"])) then
+            if (me==1) print '(a)', usage
+            stop
+          end if
+
+          if (me==1) then
+
+            print '(a)', new_line("") // "Append '-- --help' or '-- -h' to your `fpm test` command to display usage information."
+
+#if (! defined(__GFORTRAN__)) && (! defined(NAGFOR))
+            associate(search_string => command_line%flag_value("--contains"))
+#else
+            block; character(len=:), allocatable :: search_string; search_string = command_line%flag_value("--contains")
+#endif
+              if (len(search_string)==0) then
+                print '(a)', new_line('') // &
+                  "Running all tests." // new_line('') // &
+                  "(Add '-- --contains <string>' to run only tests with subjects or descriptions containing the specified string.)"
+              else
+                print '(a)', new_line('') // "Running only tests with subjects or descriptions containing '" // search_string // "'."
+              end if
+#if (! defined(__GFORTRAN__)) && (! defined(NAGFOR))
+            end associate
+#else
+            end block
+#endif
+          end if
+        end associate
       end associate
-
-      print "(a)", new_line("") // "Append '-- --help' or '-- -h' to your `fpm test` command to display usage information."
-
     end subroutine
 
 end submodule julienne_test_harness_s

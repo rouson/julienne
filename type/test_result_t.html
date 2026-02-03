@@ -94,7 +94,7 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 9.5% of total for derived types.</p>Including implementation: 11 statements,  8.7% of total for derived types.">25 statements</a>
+                 title="<p> 8.2% of total for derived types.</p>Including implementation: 11 statements,  8.4% of total for derived types.">25 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -136,7 +136,7 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/test_result_t.html#variable-description_~3">description_</a>
+            <a class="list-group-item" href="../type/test_result_t.html#variable-description_~2">description_</a>
             <a class="list-group-item" href="../type/test_result_t.html#variable-diagnosis_">diagnosis_</a>
         </div>
       </div>
@@ -175,9 +175,9 @@
       </a>
       <div id="boundprocs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-characterize">characterize</a>
+            <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-co_characterize">co_characterize</a>
             <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-description_contains">description_contains</a>
-            <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-passed~2">passed</a>
+            <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-passed">passed</a>
             <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-skipped">skipped</a>
             <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-description_contains_characters">description_contains_characters</a>
             <a class="list-group-item" href="../type/test_result_t.html#boundprocedure-description_contains_string">description_contains_string</a>
@@ -323,7 +323,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-description_~3"></span>
+              <span class="anchor" id="variable-description_~2"></span>
               type(<a href='string_t.html'>string_t</a>),
             </td>
               <td>private</td>
@@ -391,7 +391,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-description~4"></span>
+              <span class="anchor" id="variable-description~8"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -406,7 +406,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-diagnosis~20"></span>
+              <span class="anchor" id="variable-diagnosis~2"></span>
               type(<a href='test_diagnosis_t.html'>test_diagnosis_t</a>),
             </td>
 <td>intent(in),</td>
@@ -432,7 +432,7 @@ large graphs.</div>
           <li class="list-group-item">
                 <h3>
     private elemental module function construct_from_string(description, diagnosis) result(test_result)  
-    <a href="../proc/construct_from_string.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+    <a href="../proc/construct_from_string~2.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 
     </h3>
   <p>The result is a test_result_t object with the components defined by the dummy arguments</p>
@@ -450,7 +450,7 @@ large graphs.</div>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-description~3"></span>
+              <span class="anchor" id="variable-description~7"></span>
               type(<a href='string_t.html'>string_t</a>),
             </td>
 <td>intent(in)</td>
@@ -465,7 +465,7 @@ large graphs.</div>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-diagnosis~19"></span>
+              <span class="anchor" id="variable-diagnosis"></span>
               type(<a href='test_diagnosis_t.html'>test_diagnosis_t</a>),
             </td>
 <td>intent(in),</td>
@@ -500,10 +500,10 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-characterize"></span>
+      <span class="anchor" id="boundprocedure-co_characterize"></span>
       <h3>
           procedure, public ::
-  <strong>characterize</strong>
+  <strong>co_characterize</strong>
         
       </h3>
     </div>
@@ -511,11 +511,11 @@ large graphs.</div>
           <li class="list-group-item">
                 <h3>interface </h3>
                     <h3>
-    private pure module function characterize(self) result(characterization)  
-    <a href="../proc/characterize.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+    private module subroutine co_characterize(self)  
+    <a href="../proc/co_characterize~2.html"><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 </h3>
 
-  <p>The result is a character description of the test and its outcome</p>
+  <p>Print a description of the test, its outcome, and diagnostic information if the test fails</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -533,7 +533,7 @@ large graphs.</div>
               <span class="anchor" ></span>
               class(<a href='test_result_t.html'>test_result_t</a>),
             </td>
-<td>intent(in)</td>
+<td>intent(inout)</td>
               <td></td>            <td>
               
             </td>
@@ -546,11 +546,6 @@ large graphs.</div>
     </tbody>
   </table>
 
-    <h4>
-    Return Value
-    <small>character(len=:), allocatable</small>
-    </h4>
-    
 
           </li>
       </ul>
@@ -599,7 +594,7 @@ large graphs.</div>
           <div class="row">
               <div class="card mt-3">
     <div class="card-header codesum">
-      <span class="anchor" id="boundprocedure-passed~2"></span>
+      <span class="anchor" id="boundprocedure-passed"></span>
       <h3>
           procedure, public ::
   <strong>passed</strong>
@@ -880,14 +875,14 @@ large graphs.</div>
           <div class="col">
             <p>
               Julienne
- was developed by Berkeley Lab<br>              &copy; 2025 
+ was developed by Berkeley Lab<br>              &copy; 2026 
 </p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-29 01:21 +0000             </p>
+ on 2026-02-03 05:02 +0000             </p>
           </div>
         </div>
         <br>

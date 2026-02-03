@@ -30,7 +30,7 @@ contains
 
 
   module procedure from_components
-    test_suite%test_subjects_ = test_subjects
+    allocate(test_suite%test_subjects_, source = test_subjects)
   end procedure
 
   module procedure from_file
@@ -100,8 +100,9 @@ contains
     file = file_t([ &
        string_t(copyright_and_license) // new_line('') &
       ,string_t("module ") // test_module &
-      ,string_t("  use julienne_m, only : test_t, test_description_t, test_diagnosis_t, test_result_t")&
-      ,string_t("  use julienne_m, only : operator(.approximates.), operator(.within.), operator(.all.)")&
+      ,string_t("  use julienne_m, only : &") &
+      ,string_t("     test_t, test_description_t, test_diagnosis_t, test_result_t &") &
+      ,string_t("    ,operator(.approximates.), operator(.within.), operator(.all.), operator(//)") &
       ,string_t("  use " // subject_module // ", only : " // subject_type) &
       ,string_t("  implicit none") // new_line('') &
       ,string_t("  type, extends(test_t) :: ") // test_type &
@@ -126,11 +127,14 @@ contains
       ,string_t("  function check_something() result(test_diagnosis)") &
       ,string_t("    type(test_diagnosis_t) test_diagnosis") &
       ,string_t("    type(") // subject_type // ") " // subject &
-      ,string_t("    test_diagnosis = .all.([22./7., 3.14159] .approximates. ") // subject // "%pi() .within. 0.001)" &
+      ,string_t("    test_diagnosis = .all.( &") &
+      ,string_t("       [22./7., 3.14159] .approximates. ") // subject // "%pi() .within. 0.001 &" &
+      ,string_t("    ) // ' (pi approximation)'") &
       ,string_t("  end function") // new_line('')  &
       ,string_t("  function do_something() result(test_diagnosis)") &
       ,string_t("    type(test_diagnosis_t) test_diagnosis") &
-      ,string_t("    test_diagnosis = test_diagnosis_t(test_passed = 1 == 1, diagnostics_string = 'craziness ensued')") &
+      ,string_t("    test_diagnosis = &") &
+      ,string_t("      test_diagnosis_t(test_passed = 1 == 1, diagnostics_string = 'craziness ensued')") &
       ,string_t("  end function") // new_line('') &
       ,string_t("end module") &
     ])
@@ -138,7 +142,6 @@ contains
 
   module procedure write_driver
     integer file_unit, l
-    type(string_t) use_statement, fixture_constructor
     type(string_t), allocatable :: test_modules(:), test_types(:)
 
     open(newunit=file_unit, file=file_name, form='formatted', status='unknown', action='write')
@@ -148,7 +151,6 @@ contains
     write(file_unit, '(a)') "  use julienne_m, only : test_fixture_t, test_harness_t"
 
     block
-      type(string_t), allocatable :: test_modules(:)
       type(string_t) use_statement
       test_modules = self%test_modules() ! GCC 14.2 blocks the use of an association
       test_types = self%test_types()     ! GCC 14.2 blocks the use of an association
@@ -162,7 +164,6 @@ contains
     write(file_unit, '(a)') "  associate(test_harness => test_harness_t([ &"
 
     block
-      type(string_t), allocatable :: test_types(:)
       type(string_t) fixture_constructor
       test_types   = self%test_types()   ! GCC 14.2 blocks the use of an association
       fixture_constructor =  "     test_fixture_t(" // test_types(1) // "()) &"

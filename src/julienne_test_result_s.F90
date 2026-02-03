@@ -1,0 +1,110 @@
+! Copyright (c) 2024-2025, The Regents of the University of California and Sourcery Institute
+! Terms of use are as specified in LICENSE.txt
+
+#include "julienne-assert-macros.h"
+#include "language-support.F90"
+
+submodule(julienne_test_result_m) julienne_test_result_s
+#if ASSERTIONS
+  use julienne_assert_m, only : call_julienne_assert_
+#endif
+  use julienne_multi_image_m, only : internal_this_image, internal_num_images, internal_sync_all, internal_co_sum_integer
+  implicit none
+
+contains
+
+    module procedure construct_from_string
+      test_result%description_ = description
+      if (present(diagnosis)) test_result%diagnosis_ = diagnosis
+    end procedure
+
+    module procedure construct_from_character
+      test_result%description_ = description
+      if (present(diagnosis)) test_result%diagnosis_ = diagnosis
+    end procedure
+
+#if HAVE_MULTI_IMAGE_SUPPORT
+
+    module procedure co_characterize
+
+      logical i_passed
+      integer, parameter :: skips=1, passes=2
+      integer tally(skips:passes)
+      character(len=*), parameter :: indent = "   "
+
+      associate(i_skipped => .not. allocated(self%diagnosis_))
+
+        if (i_skipped) then
+          i_passed = .false.
+        else
+          i_passed = self%diagnosis_%test_passed()
+        end if
+
+        tally = [merge(1,0,i_skipped), merge(1,0,i_passed)]
+        call internal_co_sum_integer(tally)
+
+        associate(me => internal_this_image(), images => internal_num_images(), &
+                  images_skipped => tally(skips), images_passed => tally(passes))
+          call_julienne_assert(any(images_skipped == [0,images]))
+          if (i_skipped) then
+            if (me==1) print '(a)', indent // "SKIPS  on " // trim(self%description_%string()) // "."
+          else
+            if (images_passed < images .and. i_passed) then
+              ! a failure on any image becomes a failure on all images
+              self%diagnosis_ = test_diagnosis_t(test_passed=.false., diagnostics_string="peer image failure")
+            end if
+            if (me==1) print '(a)', indent // merge("passes on ", "FAILS  on ", self%diagnosis_%test_passed()) // trim(self%description_%string()) // "."
+#if ! ASYNCHRONOUS_DIAGNOSTICS
+            call internal_sync_all ! ensure image 1 prints test outcome before any failure diagnostics print
+#endif
+            if (.not. i_passed) then
+              associate(image => string_t(me))
+                print '(a)', indent // indent // "diagnostics on image " // image%string() // ": " // self%diagnosis_%diagnostics_string()
+              end associate
+            end if
+#if ! ASYNCHRONOUS_DIAGNOSTICS
+            call internal_sync_all ! ensure all images print failure diagnostics, if any, for a given test before any image moves on to the next test
+#endif
+          end if
+        end associate
+      end associate
+    end procedure
+
+#else
+
+    module procedure co_characterize
+
+      character(len=*), parameter :: indent = "   "
+
+      if (.not. allocated(self%diagnosis_)) then
+        print '(a)', indent // "SKIPS  on " // trim(self%description_%string()) // "."
+      else
+        associate(test_passed => self%diagnosis_%test_passed())
+          print '(a)', indent // merge("passes on ", "FAILS  on ", test_passed) // trim(self%description_%string()) // "."
+          if (.not. test_passed) print '(a)', indent //indent // "diagnostics: " // self%diagnosis_%diagnostics_string()
+        end associate
+      end if
+    end procedure
+#endif
+
+    module procedure passed
+      if (.not. allocated(self%diagnosis_)) then
+        test_passed = .false.
+      else
+        test_passed = self%diagnosis_%test_passed()
+      end if
+    end procedure
+
+    module procedure skipped
+      test_skipped = .not. allocated(self%diagnosis_)
+    end procedure
+
+    module procedure description_contains_string
+      substring_found = self%description_contains_characters(substring%string())
+    end procedure
+
+    module procedure description_contains_characters
+      substring_found = index(self%description_%string(), substring) /= 0
+    end procedure
+
+end submodule julienne_test_result_s

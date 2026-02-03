@@ -9,6 +9,7 @@ submodule(julienne_test_description_m) julienne_test_description_s
   use assert_m
   use julienne_assert_m, only : call_julienne_assert_
   use julienne_command_line_m, only : command_line_t
+  use iso_c_binding, only: c_f_procpointer
   implicit none
 contains
 
@@ -18,14 +19,40 @@ contains
       call_assert(allocated(test_description%description_))
     end procedure
 
+    module procedure construct_from_characters_funloc
+      test_description%description_ = description
+      call c_f_procpointer(diagnosis_function, test_description%diagnosis_function_)
+      call_assert(allocated(test_description%description_))
+    end procedure
+
+    module procedure construct_from_characters_usher
+      test_description%description_ = description
+      test_description%diagnosis_function_ => diagnosis_function%ptr
+      call_assert(allocated(test_description%description_))
+    end procedure
+
     module procedure construct_from_string
       test_description%description_ = description
       if (present(diagnosis_function)) test_description%diagnosis_function_ => diagnosis_function
       call_assert(allocated(test_description%description_))
     end procedure
 
+    module procedure construct_from_string_funloc
+      test_description%description_ = description
+      call c_f_procpointer(diagnosis_function, test_description%diagnosis_function_)
+      call_assert(allocated(test_description%description_))
+    end procedure
+
+    module procedure construct_from_string_usher
+      test_description%description_ = description
+      test_description%diagnosis_function_ => diagnosis_function%ptr
+      call_assert(allocated(test_description%description_))
+    end procedure
+
     module procedure run
+
       call_assert(allocated(self%description_))
+
       if (associated(self%diagnosis_function_)) then
         test_result = test_result_t(self%description_, self%diagnosis_function_())
       else
@@ -45,9 +72,9 @@ contains
 
     module procedure equals
       call_assert(allocated(lhs%description_) .and. allocated(rhs%description_))
-      lhs_eq_rhs = (lhs%description_ == rhs%description_)
-      if (associated(lhs%diagnosis_function_) .and. associated(rhs%diagnosis_function_)) &
-        lhs_eq_rhs = lhs_eq_rhs .and. associated(lhs%diagnosis_function_, rhs%diagnosis_function_)
+      lhs_eq_rhs = (lhs%description_ == rhs%description_) .and. &
+         ( associated(lhs%diagnosis_function_, rhs%diagnosis_function_) .or. &
+           ( .not. associated(lhs%diagnosis_function_) .and. .not. associated(rhs%diagnosis_function_) ) )
     end procedure
 
     module procedure filter

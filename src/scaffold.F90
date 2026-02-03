@@ -9,7 +9,7 @@ program scaffold
 
   if (help_requested()) call print_usage_info_and_stop
 
-#ifndef __GNUC__
+#if (! __GNUC__) && (! NAGFOR)
   associate(subjects_file_name => command_line%flag_value("--json-file"))
     if (len(subjects_file_name) == 0) call print_usage_info_and_stop
     print '(*(a))', "Reading test subject information from " // subjects_file_name
@@ -33,7 +33,6 @@ program scaffold
 #else
   block
     character(len=:), allocatable ::  path, subjects_file_name
-    type(file_t) driver
     subjects_file_name = command_line%flag_value("--json-file")
     if (len(subjects_file_name) == 0) call print_usage_info_and_stop
     print '(*(a))', "Reading test subject information from " // subjects_file_name
@@ -42,6 +41,13 @@ program scaffold
       if (len(path) == 0) call print_usage_info_and_stop
       print '(*(a))', "Writing test-suite scaffolding in " // path
       call test_suite%write_driver(path // "/driver.f90")
+      associate(subjects => test_suite%test_subjects(), modules => test_suite%test_modules())
+        do i = 1, size(subjects)
+          associate(stub => test_suite%stub_file(subjects(i)))
+            call stub%write_lines(path // "/" // modules(i) // ".f90")
+          end associate
+        end do
+      end associate
     end associate
   end block
 #endif
@@ -49,7 +55,6 @@ program scaffold
 contains
 
     logical function help_requested()
-      character(len=:), allocatable :: file_name
       type(command_line_t) command_line
       help_requested = command_line%argument_present([character(len=len("--help"))::"--help","-h"])
     end function

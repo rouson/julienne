@@ -88,12 +88,12 @@
         <p> Find us on&hellip;</p>
       <p>
         <a class="btn btn-lg btn-primary" href="https://github.com/berkeleylab/inference-engine
-https://github.com/sourceryinstitute/julienne" role="button">GitHub</a>
+https://github.com/berkeleylab/julienne" role="button">GitHub</a>
         
         
         
         
-        <a class="btn btn-lg btn-danger" style="float:right" href="https://github.com/sourceryinstitute/julienne/releases" role="button">Download the Source</a>
+        <a class="btn btn-lg btn-danger" style="float:right" href="https://github.com/berkeleylab/julienne/releases" role="button">Download the Source</a>
       </p>
     </div>
 
@@ -105,132 +105,128 @@ https://github.com/sourceryinstitute/julienne" role="button">GitHub</a>
 </p>
 
 <h1 id="julienne-idiomatic-correctness-checking-for-fortran-2023">Julienne: Idiomatic Correctness Checking for Fortran 2023</h1>
-<p>The Julienne framework offers a unified approach to unit testing and runtime
-assertion checking.  Julienne defines idioms for specifying correctness
-conditions in a common way when writing tests that wrap the tested procedures
-or assertions that conditionally execute inside procedures to check correctness.
-Julienne's idioms center around expressions built from defined operations: a
-uniquely flexible Fortran capability allowing developers to define <em>new</em>
-operators in addition to overloading Fortran's intrinsic operators.  The
-following table provides examples of the expressions Julienne supports:</p>
+<p>The Julienne framework offers a unified approach to writing unit tests and
+assertions.  Julienne defines idioms for specifying correctness conditions in a
+common in tests that wrap the tested procedures or assertions that conditionally
+execute inside procedures.  Julienne idioms center around expressions built from
+defined operations: a uniquely flexible Fortran capability allowing developers
+to define <em>new</em> operators or to overloading Fortran's intrinsic operators.</p>
 <table>
 <thead>
 <tr>
 <th>Example expressions</th>
-<th>Operand types</th>
+<th>Supported operand types</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>x .approximates. y .within. tolerance</code></td>
-<td><code>real</code>, <code>double precision</code></td>
+<td><code>real</code>, <code>double precision</code> for <code>x</code>, <code>y</code>, <code>tolerance</code></td>
 </tr>
 <tr>
 <td><code>x .approximates. y .withinFraction. tolerance</code></td>
-<td><code>real</code>, <code>double precision</code></td>
+<td><code>real</code>, <code>double precision</code> for <code>x</code>, <code>y</code>, <code>tolerance</code></td>
 </tr>
 <tr>
 <td><code>x .approximates. y .withinPercentage. tolerance</code></td>
-<td><code>real</code>, <code>double precision</code></td>
+<td><code>real</code>, <code>double precision</code> for <code>x</code>, <code>y</code>, <code>tolerance</code></td>
 </tr>
 <tr>
 <td><code>.all. ([i,j] .lessThan. k)</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>test_diagnosis_t</code> for <code>.all.</code> operator's operand</td>
 </tr>
 <tr>
 <td><code>.all. ([i,j] .lessThan. [k,m])</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>test_diagnosis_t</code> for <code>.all</code>. operator's operand</td>
 </tr>
 <tr>
 <td><code>.all. (i .lessThan. [k,m])</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>test_diagnosis_t</code> for <code>.all.</code> operator's operand</td>
 </tr>
 <tr>
 <td><code>(i .lessThan. j) .also. (k .equalsExpected. m))</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>test_diagnosis_t</code> for <code>.also.</code> operator's operands</td>
 </tr>
 <tr>
 <td><code>x .lessThan. y</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>integer</code>, <code>real</code>, <code>double precision</code> for <code>x</code>, <code>y</code></td>
 </tr>
 <tr>
 <td><code>x .greaterThan. y</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>integer</code>, <code>real</code>, <code>double precision</code> for <code>x</code>, <code>y</code></td>
 </tr>
 <tr>
 <td><code>i .equalsExpected. j</code></td>
-<td><code>integer</code>, <code>character</code>, <code>type(c_ptr)</code></td>
+<td><code>integer</code>, <code>character</code>, <code>type(c_ptr)</code> for <code>i</code>, <code>j</code></td>
 </tr>
 <tr>
 <td><code>i .isAtLeast. j</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>integer</code>, <code>real</code>, <code>double precision</code> for <code>i</code>, <code>j</code></td>
 </tr>
 <tr>
 <td><code>i .isAtMost. j</code></td>
-<td><code>integer</code>, <code>real</code>, <code>double precision</code></td>
+<td><code>integer</code>, <code>real</code>, <code>double precision</code> for <code>i</code>, <code>j</code></td>
 </tr>
 <tr>
 <td><code>s .isBefore. t</code></td>
-<td><code>character</code></td>
+<td><code>character</code> for <code>s</code>, <code>t</code></td>
 </tr>
 <tr>
 <td><code>s .isAfter. t</code></td>
-<td><code>character</code></td>
+<td><code>character</code> for <code>s</code>, <code>t</code></td>
 </tr>
 <tr>
-<td><code>.expect. command_line%argument_present("--help")</code></td>
-<td><code>logical</code></td>
+<td><code>.expect. allocated(A)</code> // " (expected allocated A)"</td>
+<td><code>logical</code> for <code>.expect.</code> operator's operand</td>
 </tr>
 </tbody>
 </table>
-<p>where 
+<p>where
 * <code>.isAtLeast.</code> and <code>.isAtMost.</code> can alternatively be spelled <code>.greaterThanOrEqualTo.</code> and <code>.lessThanOrEqualTo.</code>, respectively;
-* <code>.equalsExpected.</code> uses <code>==</code>, which implies that trailing blank spaces are ignored in character operands;<br>
+* <code>.equalsExpected.</code> uses <code>==</code>, which implies that trailing blank spaces are ignored in character operands;
 * <code>.equalsExpected.</code> with integer operands supports default integers and <code>integer(c_size_t)</code>;
-* <code>.isBefore.</code> and <code>.isAfter.</code> verify alphabetical and reverse-alphabetical  order, respectively; 
-* <code>.all.</code> aggregates arrays of expression results, reports a consensus result, passes, and shows diagnostics only for failing tests, if any; and
-* <code>.equalsExpected.</code> generates asymmetric diagnostic output for failures, denoting the left- and right-hand sides as the actual value and expected values, respectively.</p>
+* <code>.isBefore.</code> and <code>.isAfter.</code> verify alphabetical and reverse-alphabetical  order, respectively;
+* <code>.all.</code> aggregates arrays of expression results, reports a consensus result, and shows diagnostics only for failing tests, if any;
+* <code>.equalsExpected.</code> generates asymmetric diagnostic output for failures, denoting the left- and right-hand sides as the actual value and expected values, respectively; and
+* <code>//</code> appends the subsequent string to diagnostics strings, if any.</p>
 <h2 id="expressive-idioms">Expressive idioms</h2>
 <h3 id="assertions">Assertions</h3>
-<p>Any of the above expressions can be the actual argument in an invocation
-of Julienne's <code>call_julienne_assert</code> function-line preprocessor macro:</p>
+<p>Any of the above expressions can be the actual argument in an invocation of
+Julienne's <code>call_julienne_assert</code> function-line preprocessor macro:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">call_julienne_assert</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="p">.</span><span class="n">lessThan</span><span class="p">.</span><span class="w"> </span><span class="n">y</span><span class="p">)</span>
 </code></pre></div>
 
 <p>which a preprocessor will replace with a call to Julienne's assertion subroutine
 when compiling with <code>-DASSERTIONS</code>.  Otherwise, the preprocessor will remove the
-above line entirely when <code>-DASSERTIONS</code> is not present.</p>
+above line entirely.</p>
 <h3 id="unit-tests">Unit tests</h3>
-<p>The above tabulated expressions can also serve as function results in unit tests.</p>
+<p>The above tabulated expressions can also serve as results in unit-test functions.</p>
 <h3 id="constraints">Constraints</h3>
 <p>All operands in an expression must be compatible in type and kind as well as
-conformable in rank, where the latter condition implies that the operands must
-be all scalars or all arrays with the same shape or a combination of scalars and
-arrays with the same shape. This constraint follows from each of the binary
-operators being <code>elemental</code>.  The unary <code>.all.</code> operator applies to operands of
-any rank.</p>
-<p>Each tabulated expression above produces a <code>test_diagnosis_t</code> object with two
+conformable in rank. Conformability implies that the operands must be all
+scalars or all arrays with the same shape or a combination of scalars and arrays
+with the same shape. This constraint follows from each of the binary operators
+being <code>elemental</code>.  The unary <code>.all.</code> operator applies to operands of any rank.</p>
+<p>Each expression tabulated above produces a <code>test_diagnosis_t</code> object with two
 components:</p>
 <ul>
 <li>a <code>logical</code> indicator of test success if <code>.true</code>. or failure if <code>.false.</code> and</li>
 <li>an automated diagnostic messages generated only if the test or assertion fails.</li>
 </ul>
 <h2 id="custom-test-diagnostics">Custom Test Diagnostics</h2>
-<p>For cases in which Julienne's operators do not support the desired correctness
-condition, the framework provides string-handling utilities for use in crafting
-custom diagnostic messages.  The string utilities center around Julienne's
-<code>string_t</code> derived type, which offers <code>elemental</code> constructor functions, i.e., 
-functions that one invokes via the same name as the derived type: <code>string_t()</code>.
-The <code>string_t()</code> constructor functions convert data of numeric type to
-<code>character</code> type, storing the resulting <code>character</code> representation in a private
-component of the constructor function result.  The actual argument provided to
-the constructor function can be of any one of several types, kinds, and ranks.</p>
+<p>For cases in which the defined operations do not support a desired correctness
+condition, Julienne provides string-handling utilities for use in crafting
+custom diagnostic messages.  The string utilities center around a <code>string_t</code>
+derived type, which offers <code>elemental</code> constructor functions, i.e., functions
+that one invokes via the same name as the derived type: <code>string_t()</code>.  The
+<code>string_t()</code> constructor functions convert data of numeric type to <code>character</code>
+type, storing the resulting <code>character</code> representation in a private component
+of the constructor function result.  The actual argument provided to the
+constructor function can be of any one of several types, kinds, and ranks.</p>
 <p>Julienne provides defined operations for concatenating <code>string_t</code> objects
 (<code>//</code>), forming a concatenated <code>string_t</code> object from an array of <code>string_t</code>
 objects (<code>.cat.</code>), forming a separated-value list (<code>.separatedBy.</code> or
-equivalently <code>.sv.</code>), including a comma-separated value list <code>(.csv.)</code>.  The
-table below shows some expressions that Julienne supports with these defined
-operations.</p>
+equivalently <code>.sv.</code>), including a comma-separated value list <code>(.csv.)</code>.</p>
 <table>
 <thead>
 <tr>
@@ -264,7 +260,7 @@ operations.</p>
 <td><code>string_t("1.50000000,2.00000000,3.25000000")</code></td>
 </tr>
 <tr>
-<td><code>"-" .separatedBy. string_t([1,2,4])</code></td>
+<td><code>string_t([1,2,4]) .separatedBy. "-"</code></td>
 <td><code>string_t("1-2-4")</code></td>
 </tr>
 <tr>
@@ -281,8 +277,7 @@ operations.</p>
 </tr>
 </tbody>
 </table>
-<p>One can use such expressions to craft a diagnostic message when constructing
-a custom test function result:</p>
+<p>One can use such expressions to craft a diagnostic message:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">test_diagnosis_t</span><span class="p">)</span><span class="w"> </span><span class="n">test_diagnosis</span>
 <span class="n">test_diagnosis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">test_diagnosis_t</span><span class="p">(</span><span class="w"> </span><span class="p">&amp;</span>
 <span class="w">  </span><span class="n">test_passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">==</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
@@ -298,17 +293,16 @@ file. By storing a file in a <code>file_t</code> object using the <code>file_t</
 constructor function one can confine a program's file input/output (I/O) to one
 or two procedures.  The resulting <code>file_t</code> object can be manipulated elsewhere
 without incurring the costs associated with file I/O.  For example, the following
-line reads a file named <code>data.txt</code> into a <code>file_t</code> object and associates the name
+lines read a file named <code>data.txt</code> into a <code>file_t</code> object and associates the name
 <code>file</code> with the resulting object.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">file_t</span><span class="p">)</span><span class="w"> </span><span class="k">file</span>
-<span class="k">associate</span><span class="p">(</span><span class="k">file</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">file_t</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">))</span>
+<div class="codehilite"><pre><span></span><code><span class="k">associate</span><span class="p">(</span><span class="k">file</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">file_t</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">))</span>
 <span class="k">end associate</span>
 </code></pre></div>
 
 <p>This style supports functional programming patterns in two ways. First, the rest
 of the program can be comprised of <code>pure</code> procedures, which are precluded from
 performing I/O.  Second, an associate name is immutable when associated with an
-expression, including an expression that is simply a function reference. 
+expression, including an expression that is simply a function reference.
 Functional programming revolves around creating and using immutable state.
 (By contrast, when associating a name with a variable or array instead of with
 an expression, only certain attributes, such as the entity's allocation status,
@@ -330,7 +324,7 @@ diagnostic messages during error termination.</p>
 <h2 id="getting-started">Getting Started</h2>
 <h3 id="writing-unit-tests">Writing Unit Tests</h3>
 <p>Please see <a href="./demo/README.md">demo/README.md</a> for a detailed demonstration of
-test setup.  </p>
+test setup.</p>
 <h3 id="writing-assertions">Writing Assertions</h3>
 <p>To write a Julienne assertion, insert a function-like preprocessor macro
 <code>call_julienne_assert</code> on a single line as in each of the two macro
@@ -360,6 +354,100 @@ literal copy of the expression (e.g., <code>allocated(a)</code>).  In either cas
 also inserts the file and line number into the stop code using via the <code>__FILE__</code>
 and <code>__LINE__</code> macros, respectively.  Most compilers write the resulting stop code
 to <code>error_unit</code>.</p>
+<h2 id="building-and-testing">Building and Testing</h2>
+<p>With the Fortran Package Manager ([<code>fpm</code>]) installed and in your <code>PATH</code>, the
+commands in the table below will build and run the Julienne test suite.  With
+<code>fpm</code> versions higher than 0.12.0, <code>flang-new</code> can be replaced with <code>flang</code>.
+For additional information on setting up parallel builds with LLVM, please see
+<a href="./doc/parallel-testing-with-flang.md">parallel-testing-with-flang.md</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Compiler/Runtime</th>
+<th>Tested Versions</th>
+<th>Run Type</th>
+<th>Example build/test commands (parallel examples use 2 images)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLVM/<a href="https://go.lbl.gov/caffeine">Caffeine</a></td>
+<td>22.0.0git</td>
+<td>parallel</td>
+<td><code>fpm test --compiler flang-new --flag "-O3 -DHAVE_MULTI_IMAGE_SUPPORT -fcoarray" --link-flag "-lcaffeine -lgasnet-smp-seq -L&lt;caffeine-path&gt; -L&lt;gasnet-path&gt;"</code></td>
+</tr>
+<tr>
+<td>LLVM</td>
+<td>20-22</td>
+<td>serial</td>
+<td><code>fpm test --compiler flang-new --flag -O3</code></td>
+</tr>
+<tr>
+<td>LLVM</td>
+<td>19</td>
+<td>serial</td>
+<td><code>fpm test --compiler flang-new --flag "-O3 -mmlir -allow-assumed-rank"</code></td>
+</tr>
+<tr>
+<td>NAG</td>
+<td>7.2, Build 7235</td>
+<td>parallel</td>
+<td><code>NAGFORTRAN_NUM_IMAGES=2 fpm test --compiler nagfor --flag "-fpp -O3 -coarray"</code></td>
+</tr>
+<tr>
+<td>Intel</td>
+<td>2025.2.{0-1}</td>
+<td>parallel</td>
+<td><code>FOR_COARRAY_NUM_IMAGES=2 fpm test --compiler ifx --flag "-fpp -O3 -coarray" --profile release</code></td>
+</tr>
+<tr>
+<td>GCC/<a href="https://github.com/sourceryinstitute/opencoarrays">OpenCoarrays</a></td>
+<td>14-15</td>
+<td>serial</td>
+<td><code>fpm test --compiler gfortran --profile release</code></td>
+</tr>
+<tr>
+<td>GCC</td>
+<td>14-15</td>
+<td>parallel</td>
+<td><code>fpm test --compiler caf --runner "cafrun -n 2" --profile release</code></td>
+</tr>
+<tr>
+<td>GCC/<a href="https://github.com/sourceryinstitute/opencoarrays">OpenCoarrays</a></td>
+<td>13</td>
+<td>serial</td>
+<td><code>fpm test --compiler gfortran --profile release --flag -ffree-line-length-none</code></td>
+</tr>
+<tr>
+<td>GCC</td>
+<td>13</td>
+<td>parallel</td>
+<td><code>fpm test --compiler caf --runner "cafrun -n 2" --profile release --flag -ffree-line-length-none</code></td>
+</tr>
+</tbody>
+</table>
+<p>The test output reports a test as skipped if there is a known issue that blocks
+the tested feature with the chosen compiler version or platform.  Due to a
+GitHub continuous-integration (CI) issue, the default behavior is to skip the
+tests for Julienne's command-line parsing utility: <code>command_line_t</code>.  To test
+<code>command_line_t</code>, add <code>-- --flag --test command_line_t --type</code> at the end of an
+<code>fpm</code> command.</p>
+<h3 id="useful-preprocessor-macros">Useful preprocessor macros:</h3>
+<p>To define the following macros or to override the values defined in Julienne's
+<code>include</code> directory, add <code>--flag -D&lt;macro-name&gt;=&lt;value&gt;</code> to an <code>fpm</code> command:</p>
+<ul>
+<li><code>ASSERTIONS</code>: enables runtime enforcement of Julienne's assertions</li>
+<li><code>HAVE_MULTI_IMAGE_SUPPORT</code>: enables Julienne's use of Fortran's built-in
+  multi-image support, for testing of parallel multi-process programs.
+  The default is compiler-dependent, set to 0 to disable multi-image support.</li>
+<li><code>ASYNCHRONOUS_DIAGNOSTICS</code>: removes synchronizations that partially order
+  test-failure diagnostics output for clarity. Only relevant for multi-image execution.</li>
+<li><code>JULIENNE_PARALLEL_CALLBACKS</code>: activates Julienne callbacks that support
+  <code>HAVE_MULTI_IMAGE_SUPPORT</code> with external SPMD multi-process models. 
+  Contact us for more details.</li>
+<li><code>TEST_INTENTIONAL_FAILURE</code>: enables tests of unit-test failure; also enables
+  tests of assertion failure if <code>ASSERTIONS</code> is non-zero.</li>
+</ul>
 <h2 id="an-origin-story">An Origin Story</h2>
 <p>Julienne's name derives from the term for vegetables sliced into thin strings:
 julienned vegetables.  The <a href="https://gitlab.com/everythingfunctional/veggies">Veggies</a> and <a href="https://gitlab.com/everythingfunctional/garden">Garden</a> unit-testing frameworks
@@ -367,83 +455,21 @@ inspired the structure of Julienne's tests and output.  Initially developed in
 the <a href="https://github.com/sourceryinstitute/sourcery">Sourcery</a> repository as lightweight alternative with greater portability
 across compilers, Julienne's chief innovation now lies in the expressive idioms
 the framework supports.</p>
-<h2 id="building-and-testing">Building and Testing</h2>
-<h3 id="compiler-support">Compiler support</h3>
-<p>When built with the compiler versions tabulated below, all Julienne tests pass.</p>
-<table>
-<thead>
-<tr>
-<th>Compiler</th>
-<th>Version(s) Tested</th>
-<th>Known Issues</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>LLVM <code>flang-new</code></td>
-<td>19, 20</td>
-<td>none</td>
-</tr>
-<tr>
-<td>NAG <code>nagfor</code></td>
-<td>7.2 Build 7227</td>
-<td>none</td>
-</tr>
-<tr>
-<td>Intel <code>ifx</code></td>
-<td>2025.2.1</td>
-<td>none</td>
-</tr>
-<tr>
-<td>GCC <code>gfortran</code></td>
-<td>13.4.0, 14.3.0, 15.1.0</td>
-<td>see below</td>
-</tr>
-</tbody>
-</table>
-<p>With <code>gfortran</code> 13 through 14.2.0,
-   - The <code>test_description_t</code> constructor's <code>diagnosis_function</code> actual argument
-     must be a procedure pointer declared with <code>procedure(diagnosis_function_i)</code>.
-   - The <code>string_t</code> type-bound  function <code>bracket</code> crashes.</p>
-<h3 id="buildtest-commands">Build/test commands</h3>
-<h4 id="llvm-flang-new-compiler">LLVM (<code>flang-new</code>) compiler</h4>
-<h5 id="flang-new-version-20-or-later"><code>flang-new</code> version 20 or later</h5>
-<div class="codehilite"><pre><span></span><code>fpm test --compiler flang-new
-</code></pre></div>
-
-<h5 id="flang-new-version-19"><code>flang-new</code> version 19</h5>
-<p>Add the following command before the <code>fpm</code> command recommended above for
-LLVM 20 or later:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">FPM_FFLAGS</span><span class="o">=</span><span class="s2">&quot;-mmlir -allow-assumed-rank&quot;</span>
-</code></pre></div>
-
-<p>where this <code>FPM_FFLAGS</code> setting turns on the support for Fortran's assumed-rank
-dummy arguments.</p>
-<p>If you do not have access to LLVM 19 or 20, we recommend building the
-llvm-project main branch from source.  A script that might help with
-doing so is in the <a href="https://github.com/rouson/handy-dandy/blob/7caaa4dc3d6e5331914a3025f0cb1db5ac1a886f/src/fresh-llvm-build.sh">handy-dandy</a> repository.</p>
-<h3 id="nag-nagfor-compiler">NAG (<code>nagfor</code>) compiler</h3>
-<div class="codehilite"><pre><span></span><code>fpm test --compiler nagfor --flag -fpp
-</code></pre></div>
-
-<h4 id="gnu-gfortran-compiler">GNU (<code>gfortran</code>) compiler</h4>
-<h5 id="gfortran-versions-14-or-higher"><code>gfortran</code> versions 14 or higher</h5>
-<div class="codehilite"><pre><span></span><code>fpm test --compiler gfortran --profile release
-</code></pre></div>
-
-<h5 id="gfortran-version-13"><code>gfortran</code> version 13</h5>
-<div class="codehilite"><pre><span></span><code>fpm test --compiler gfortran --profile release --flag &quot;-ffree-line-length-none&quot;
-</code></pre></div>
-
-<p>where the <code>-ffree-line-length-none</code> turns on support for lines exceeding the Fortran 2018 limit of 132 columns.
-(Fortran 2023 expands the allowable line length to 5,000 characters.)</p>
-<h4 id="intel-ifx-compiler">Intel (<code>ifx</code>) compiler</h4>
-<div class="codehilite"><pre><span></span><code>fpm test --compiler ifx --flag &quot;-fpp -O3&quot; --profile release
-</code></pre></div>
-
-<p>Older versions of <code>ifx</code> might require adding <code>-coarray</code> to the quoted argument just after <code>--flag</code> above.</p>
 <h2 id="documentation">Documentation</h2>
 <p>See our online <a href="https:///berkeleylab.github.io/julienne/">documentation</a> or build the documentation locally by installing <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a> and executing <code>ford ford.md</code>.</p>
+<h2 id="publications">Publications</h2>
+<p>Citing Julienne? Please use the following publication:</p>
+<p>Damian Rouson, Dan Bonachea, and Katherine Rasmussen, "<a href="https://doi.org/10.25344/S4BG65"><strong>Idiomatic Correctness-Checking via Julienne in Fortran 2023</strong></a>",   <br>
+<em>Proceedings of the <a href="https://us-rse.org/usrse25/">US Research Software Engineering Conference</a></em>, October 2025. DOI: <a href="https://doi.org/10.25344/S4BG65">10.25344/S4BG65</a></p>
+<h2 id="known-software-using-julienne">Known Software Using Julienne</h2>
+<ul>
+<li><a href="https://github.com/pibion/band_distribution?tab=readme-ov-file">band_distribution</a>: a utility supporting the search for dark matter </li>
+<li><a href="https://go.lbl.gov/caffeine">Caffeine</a>: Coarray Fortran Framework of Efficient Interfaces to Network Environments</li>
+<li><a href="https://go.lbl.gov/fiats">Fiats</a>: Functional inference and training for surrogates</li>
+<li><a href="https://go.lbl.gov/matcha">Matcha</a>: Motility analysis of T-cell histories in activation</li>
+<li>nQMCC: Quantum Monte Carlo simulation software for nuclear physics</li>
+<li><a href="https://www.nrc.gov/docs/ML1200/ML120060218.pdf">TRACE</a>:a two-phase flow solver for nuclear reactors</li>
+</ul>
         </div>
           <div class="col-md-4">
             <div class="card card-body bg-light">
@@ -452,7 +478,7 @@ doing so is in the <a href="https://github.com/rouson/handy-dandy/blob/7caaa4dc3
               <p class="card-text"></p>
                 <div class="text-center"><div class="btn-group" role="group">
                     
-                    <a class="btn btn-lg btn-primary" href="https://github.com/sourceryinstitute"><i class="fa fa-github fa-lg"></i></a>
+                    <a class="btn btn-lg btn-primary" href="https://github.com/berkeleylab"><i class="fa fa-github fa-lg"></i></a>
                     
                     
                     
@@ -479,7 +505,7 @@ doing so is in the <a href="https://github.com/rouson/handy-dandy/blob/7caaa4dc3
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Modules</h3>
-              <ul><li><a href='module/julienne_assert_m.html'>julienne_assert_m</a></li><li><a href='module/julienne_bin_m.html'>julienne_bin_m</a></li><li><a href='module/julienne_command_line_m.html'>julienne_command_line_m</a></li><li><a href='module/julienne_file_m.html'>julienne_file_m</a></li><li><a href='module/julienne_formats_m.html'>julienne_formats_m</a></li><li><a href='module/julienne_github_ci_m.html'>julienne_github_ci_m</a></li><li><a href='module/julienne_m.html'>julienne_m</a></li><li><a href='module/julienne_string_m.html'>julienne_string_m</a></li><li><a href='module/julienne_test_description_m.html'>julienne_test_description_m</a></li><li><a href='module/julienne_test_diagnosis_m.html'>julienne_test_diagnosis_m</a></li></ul>
+              <ul><li><a href='module/julienne_assert_m.html'>julienne_assert_m</a></li><li><a href='module/julienne_bin_m.html'>julienne_bin_m</a></li><li><a href='module/julienne_command_line_m.html'>julienne_command_line_m</a></li><li><a href='module/julienne_file_m.html'>julienne_file_m</a></li><li><a href='module/julienne_formats_m.html'>julienne_formats_m</a></li><li><a href='module/julienne_github_ci_m.html'>julienne_github_ci_m</a></li><li><a href='module/julienne_m.html'>julienne_m</a></li><li><a href='module/julienne_multi_image_m.html'>julienne_multi_image_m</a></li><li><a href='module/julienne_string_m.html'>julienne_string_m</a></li><li><a href='module/julienne_test_description_m.html'>julienne_test_description_m</a></li></ul>
             </div>
             <div>
               <ul>
@@ -490,7 +516,7 @@ doing so is in the <a href="https://github.com/rouson/handy-dandy/blob/7caaa4dc3
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Procedures</h3>
-              <ul><li><a href='interface/argument_present.html'>argument_present</a></li><li><a href='interface/array_of_strings.html'>array_of_strings</a></li><li><a href='interface/as_character.html'>as_character</a></li><li><a href='interface/assign_character_to_string_t.html'>assign_character_to_string_t</a></li><li><a href='interface/assign_string_t_to_character.html'>assign_string_t_to_character</a></li><li><a href='interface/base_name.html'>base_name</a></li><li><a href='interface/bin_t.html'>bin_t</a></li><li><a href='interface/bracket.html'>bracket</a></li><li><a href='interface/call_julienne_assert_.html'>call_julienne_assert_</a></li><li><a href='interface/character_cat_string_t.html'>character_cat_string_t</a></li></ul>
+              <ul><li><a href='interface/argument_present.html'>argument_present</a></li><li><a href='interface/array_of_strings.html'>array_of_strings</a></li><li><a href='interface/as_character.html'>as_character</a></li><li><a href='interface/assign_character_to_string_t.html'>assign_character_to_string_t</a></li><li><a href='interface/assign_logical.html'>assign_logical</a></li><li><a href='interface/assign_string_t_to_character.html'>assign_string_t_to_character</a></li><li><a href='interface/base_name.html'>base_name</a></li><li><a href='interface/bin_t.html'>bin_t</a></li><li><a href='interface/bracket.html'>bracket</a></li><li><a href='interface/call_julienne_assert_.html'>call_julienne_assert_</a></li></ul>
             </div>
             <div>
               <ul>
@@ -501,7 +527,7 @@ doing so is in the <a href="https://github.com/rouson/handy-dandy/blob/7caaa4dc3
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Derived Types</h3>
-              <ul><li><a href='type/bin_t.html'>bin_t</a></li><li><a href='type/command_line_t.html'>command_line_t</a></li><li><a href='type/double_precision_operands_t.html'>double_precision_operands_t</a></li><li><a href='type/file_t.html'>file_t</a></li><li><a href='type/operands_t.html'>operands_t</a></li><li><a href='type/operands_t~2.html'>operands_t</a></li><li><a href='type/string_t.html'>string_t</a></li><li><a href='type/test_description_t.html'>test_description_t</a></li><li><a href='type/test_diagnosis_t.html'>test_diagnosis_t</a></li><li><a href='type/test_fixture_t.html'>test_fixture_t</a></li></ul>
+              <ul><li><a href='type/bin_t.html'>bin_t</a></li><li><a href='type/command_line_t.html'>command_line_t</a></li><li><a href='type/double_precision_operands_t.html'>double_precision_operands_t</a></li><li><a href='type/file_t.html'>file_t</a></li><li><a href='type/operands_t~2.html'>operands_t</a></li><li><a href='type/operands_t.html'>operands_t</a></li><li><a href='type/string_t.html'>string_t</a></li><li><a href='type/test_description_t.html'>test_description_t</a></li><li><a href='type/test_diagnosis_t.html'>test_diagnosis_t</a></li><li><a href='type/test_fixture_t.html'>test_fixture_t</a></li></ul>
             </div>
             <div>
               <ul>
@@ -518,14 +544,14 @@ doing so is in the <a href="https://github.com/rouson/handy-dandy/blob/7caaa4dc3
           <div class="col">
             <p>
               Julienne
- was developed by Berkeley Lab<br>              &copy; 2025 
+ was developed by Berkeley Lab<br>              &copy; 2026 
 </p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-08-29 01:21 +0000             </p>
+ on 2026-02-03 05:02 +0000             </p>
           </div>
         </div>
         <br>
