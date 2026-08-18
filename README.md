@@ -169,7 +169,7 @@ invocations below:
 ```fortran
 #include "julienne-assertion-macros.h"
 program main
-  use, julienne_m, only : call_julienne_assert_
+  use julienne_m, only : call_julienne_assert_ ! also required
   implicit none
   real, parameter :: x=1., y=2., tolerance=3.
   call_julienne_assert(x .approximates. y .within. tolerance)
@@ -208,10 +208,11 @@ GCC/[OpenCoarrays]|13             |parallel|`fpm test --compiler caf --runner "c
 GCC               |14-16          |serial  |`fpm test --compiler gfortran --profile release`
 GCC               |13             |serial  |`fpm test --compiler gfortran --profile release --flag -ffree-line-length-none`
 Intel             |2025.2-2026.0  |parallel|`FOR_COARRAY_NUM_IMAGES=2 fpm test --compiler ifx --flag "-fpp -O3 -coarray" --profile release`
-LFortran          |0.61-0.63 |serial  |`fpm test --compiler lfortran --flag "--cpp --realloc-lhs-arrays --separate-compilation"`
-NAG               |7.2, Build 7235|parallel|`NAGFORTRAN_NUM_IMAGES=2 fpm test --compiler nagfor --flag "-fpp -O3 -coarray"`
+LFortran          |0.61-0.63      |serial  |`fpm test --compiler lfortran --flag "--cpp --realloc-lhs-arrays --separate-compilation"`
+NAG               |7.2 (-)        |parallel|`NAGFORTRAN_NUM_IMAGES=2 fpm test --compiler nagfor --flag "-O4 -fpp -coarray"`
 
 (+) Support for LLVM flang version 19 is deprecated, and may be removed in a future release.
+(-) Using NAG on macOS requires an `fpm` installation containing [PR 1312](https://github.com/fortran-lang/fpm/pull/1312)
 
 The test output reports a test as skipped if there is a known issue that blocks
 the tested feature with the chosen compiler version or platform.  Due to a
