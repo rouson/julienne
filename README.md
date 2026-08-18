@@ -169,7 +169,7 @@ invocations below:
 ```fortran
 #include "julienne-assertion-macros.h"
 program main
-  use, julienne_m, only : call_julienne_assert_
+  use julienne_m, only : call_julienne_assert_ ! also required
   implicit none
   real, parameter :: x=1., y=2., tolerance=3.
   call_julienne_assert(x .approximates. y .within. tolerance)
