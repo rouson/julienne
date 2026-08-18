@@ -78,12 +78,22 @@ contains
 
       allocate(file_object%lines_(num_lines))
   
+      read_and_store_lines: &
       do line_num = 1, num_lines
+#ifdef __LFORTRAN__
+        if (lengths(line_num)==0) then
+          file_object%lines_(line_num) = string_t("")
+          if (allocated(line)) deallocate(line)
+          allocate(character(len=1) :: line)
+          read(file_unit, '(a)') line
+          cycle read_and_store_lines
+        end if
+#endif
+        if (allocated(line)) deallocate(line)
         allocate(character(len=lengths(line_num)) :: line)
         read(file_unit, '(a)') line
         file_object%lines_(line_num) = string_t(line)
-        deallocate(line)
-      end do
+      end do read_and_store_lines
 
     end associate
 
