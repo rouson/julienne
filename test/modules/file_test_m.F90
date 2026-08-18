@@ -58,20 +58,9 @@ contains
 
     associate(output_lines => [string_t("foo"), string_t(""), string_t("bar ")])
       associate(output_file => file_t(output_lines))
-
         call output_file%write_lines(file_name)
-
         associate(input_file => file_t(file_name))
-
-          !do l = 1, size(lines)
-          !  allocate(character(len=len(file%lines_(l)%string_)) :: line)
-          !  read(file%lines_(l)%string_, '(a)') line
-          !  line == lines(l)
-          !  deallocate(line)
-          !end do
-
           test_diagnosis = test_diagnosis .also. (.all. (input_file%lines() .equalsExpected. output_lines))
-
         end associate
       end associate
     end associate
