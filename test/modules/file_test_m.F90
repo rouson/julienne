@@ -8,6 +8,7 @@ module file_test_m
   use julienne_m, only : &
      file_t &
     ,operator(.all.) &
+    ,operator(.also.) &
     ,operator(.equalsExpected.) &
     ,passing_test &
     ,string_t &
@@ -55,36 +56,22 @@ contains
 
     test_diagnosis = passing_test()
 
-    associate(output_lines => [string_t("foo"), string_t("yada yada"), string_t("bar ")])
+    associate(output_lines => [string_t("foo"), string_t(""), string_t("bar ")])
       associate(output_file => file_t(output_lines))
 
-        call output_file%write_lines()
         call output_file%write_lines(file_name)
 
         associate(input_file => file_t(file_name))
-          associate(input_lines => input_file%lines())
 
-          print '(a)', "-------><------"
-          do l = 1, size(input_lines)
-            print '(a)', input_lines(l)%string()
-          end do
-          print '(a)', "-------><------"
-          call input_file%write_lines()
+          !do l = 1, size(lines)
+          !  allocate(character(len=len(file%lines_(l)%string_)) :: line)
+          !  read(file%lines_(l)%string_, '(a)') line
+          !  line == lines(l)
+          !  deallocate(line)
+          !end do
 
-    stop "-------> here <------"
+          test_diagnosis = test_diagnosis .also. (.all. (input_file%lines() .equalsExpected. output_lines))
 
-
-            !do l = 1, size(lines)
-            !  allocate(character(len=len(file%lines_(l)%string_)) :: line)
-            !  read(file%lines_(l)%string_, '(a)') line
-            !  line == lines(l)
-            !  deallocate(line)
-            !end do
-
-            !test_diagnosis = .all. (output_lines .equalsExpected. input_lines)
-            test_diagnosis = all(output_lines == input_lines)
-
-          end associate
         end associate
       end associate
     end associate
