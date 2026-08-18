@@ -212,7 +212,7 @@ LFortran          |0.61-0.63      |serial  |`fpm test --compiler lfortran --flag
 NAG               |7.2 (-)        |parallel|`NAGFORTRAN_NUM_IMAGES=2 fpm test --compiler nagfor --flag "-O4 -fpp -coarray"`
 
 (+) Support for LLVM flang version 19 is deprecated, and may be removed in a future release.
-(-) Using NAG requires an `fpm` installation containing [PR 1312](https://github.com/fortran-lang/fpm/pull/1312)
+(-) Using NAG on macOS requires an `fpm` installation containing [PR 1312](https://github.com/fortran-lang/fpm/pull/1312)
 
 The test output reports a test as skipped if there is a known issue that blocks
 the tested feature with the chosen compiler version or platform.  Due to a
