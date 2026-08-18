@@ -50,8 +50,6 @@ contains
   function check_write_then_read() result(test_diagnosis)
     !! Check that a written file can be read correctly
     type(test_diagnosis_t) test_diagnosis
-    integer l
-    character(len=:), allocatable :: line
     character(len=*), parameter :: file_name = "build/file_t-unit-test-data.txt"
 
     test_diagnosis = passing_test()
