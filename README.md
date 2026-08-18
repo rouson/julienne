@@ -209,7 +209,7 @@ GCC               |14-16          |serial  |`fpm test --compiler gfortran --prof
 GCC               |13             |serial  |`fpm test --compiler gfortran --profile release --flag -ffree-line-length-none`
 Intel             |2025.2-2026.0  |parallel|`FOR_COARRAY_NUM_IMAGES=2 fpm test --compiler ifx --flag "-fpp -O3 -coarray" --profile release`
 LFortran          |0.61-0.63      |serial  |`fpm test --compiler lfortran --flag "--cpp --realloc-lhs-arrays --separate-compilation"`
-NAG               |7.2 (-)        |parallel|`NAGFORTRAN_NUM_IMAGES=2 fpm test --compiler nagfor --flag "-O4 -fpp"`
+NAG               |7.2 (-)        |parallel|`NAGFORTRAN_NUM_IMAGES=2 fpm test --compiler nagfor --flag "-O4 -fpp -coarray"`
 
 (+) Support for LLVM flang version 19 is deprecated, and may be removed in a future release.
 (-) Using NAG requires an `fpm` installation containing [PR 1312](https://github.com/fortran-lang/fpm/pull/1312)
